@@ -1,4 +1,5 @@
 import java.util.Scanner;
+import java.util.ArrayList;
 
 import utils.Task;
 import utils.Deadline;
@@ -9,7 +10,7 @@ import utils.NubishException;
 public class Nubish {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        Task[] tasks = new Task[100];
+        ArrayList<Task> tasks = new ArrayList<>();
         int numOfTasks = 0;
 
         String logo = """
@@ -39,47 +40,61 @@ public class Nubish {
                     System.out.printf(response, "Bye. Hope to see you again soon!");
                     break programmeLoop;
                 case "list":
-                    int count = 0;
                     StringBuilder list = new StringBuilder("\n");
 
-                    for (int i = 0; i < numOfTasks; i++) {
-                        Task t = tasks[i];
+                    for (int i = 0; i < tasks.size(); i++) {
+                        Task t = tasks.get(i);
                         list.append(String.format("%d. %s\n", i + 1, t.toString()));
                     }
 
                     System.out.printf(response, list);
                     break;
                 case "mark":
-                    int indexMark = Integer.parseInt(arguments.trim()) - 1;
-                    Task tMark = tasks[indexMark];
-                    tMark.markAsDone();
-                    String replyMark = String.format("""
+                    try {
+                        if (arguments.isEmpty()) {
+                            throw new NubishException("Hrmmm... Please put a valid task number.");
+                        }
+                        int indexMark = Integer.parseInt(arguments.trim()) - 1;
+                        Task tMark = tasks.get(indexMark);
+                        tMark.markAsDone();
+                        String replyMark = String.format("""
                             Nice! I've marked this task as done:
                                 %s
                             """, tMark.toString());
-                    System.out.printf(response, replyMark);
+                        System.out.printf(response, replyMark);
+                    }
+                    catch (NubishException e) {
+                        System.out.println(e.getMessage());
+                    }
                     break;
                 case "unmark":
-                    int indexUnmark = Integer.parseInt(arguments.trim()) - 1;
-                    Task tUnmark = tasks[indexUnmark];
-                    tUnmark.unmarkAsDone();
-                    String replyUnmark = String.format("""
+                    try {
+                        if (arguments.isEmpty()) {
+                            throw new NubishException("Hrmmm... Please put a valid task number.");
+                        }
+                        int indexUnmark = Integer.parseInt(arguments.trim()) - 1;
+                        Task tUnmark = tasks.get(indexUnmark);
+                        tUnmark.unmarkAsDone();
+                        String replyUnmark = String.format("""
                             I've unmarked this task:
                                 %s
                             """, tUnmark.toString());
-                    System.out.printf(response, replyUnmark);
+                        System.out.printf(response, replyUnmark);
+                    }
+                    catch (NubishException e) {
+                        System.out.println(e.getMessage());
+                    }
                     break;
                 case "todo":
                     try {
                         if (arguments.isEmpty()) {
                             throw new NubishException("Hrmmm... The description of a todo cannot be empty.");
                         }
+                        tasks.add(new Todo(arguments));
                         System.out.printf(response, String.format("""
                             todo task added: %s
                         Now you have %d tasks in the list.
-                        """, input, numOfTasks + 1));
-                        tasks[numOfTasks] = new Todo(arguments);
-                        numOfTasks++;
+                        """, input, tasks.size()));
                     }
                     catch (NubishException e) {
                         System.out.println(e.getMessage());
@@ -100,13 +115,12 @@ public class Nubish {
                         if (deadline.isEmpty()) {
                             throw new NubishException("Hrmmm... The deadline of the task cannot be empty.");
                         }
+                        tasks.add(new Deadline(taskName, deadline));
                         String replyDeadline = String.format("""
                                 Added task: %s (by: %s)
                             Now you have %d tasks in the list
-                            """, taskName, deadline, numOfTasks + 1);
+                            """, taskName, deadline, tasks.size());
                         System.out.printf(response, replyDeadline);
-                        tasks[numOfTasks] = new Deadline(taskName, deadline);
-                        numOfTasks++;
                     }
                     catch (NubishException e) {
                         System.out.println(e.getMessage());
@@ -136,19 +150,37 @@ public class Nubish {
                         if (toTime.isEmpty()) {
                             throw new NubishException("Hrmmm... The end of an event cannot be empty.");
                         }
-
+                        tasks.add(new Event(eventName, fromTime, toTime));
                         String replyEvent = String.format("""
                                 Added event: %s (From: %s, To: %s)
                             Now you have %d tasks in the list
-                            """, eventName, fromTime, toTime, numOfTasks + 1);
+                            """, eventName, fromTime, toTime, tasks.size());
                         System.out.printf(response, replyEvent);
-                        tasks[numOfTasks] = new Event(eventName, fromTime, toTime);
-                        numOfTasks++;
                     }
                     catch (NubishException e) {
                         System.out.println(e.getMessage());
                     }
 
+                    break;
+                case "delete":
+                    try {
+                        if (arguments.isEmpty()) {
+                            throw new NubishException("Hrmmm... The description of a todo cannot be empty.");
+                        }
+
+                        int indexDelete = Integer.parseInt(arguments.trim()) - 1;
+
+                        Task t = tasks.remove(indexDelete);
+                        String replyEvent = String.format("""
+                            Ok. I have removed this task:
+                                %s
+                            Now you have %d tasks in the list
+                            """, t.toString(), tasks.size());
+                        System.out.printf(response, replyEvent);
+                    }
+                    catch (NubishException e) {
+                        System.out.printf(e.getMessage());
+                    }
                     break;
                 default:
                     System.out.printf(response, """
@@ -159,6 +191,7 @@ public class Nubish {
                             - event
                             - mark
                             - unmark
+                            - delete
                             """);
             }
         }
