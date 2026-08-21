@@ -3,6 +3,7 @@ import utils.Task;
 import utils.Deadline;
 import utils.Event;
 import utils.Todo;
+import utils.NubishException;
 
 public class Nubish {
     public static void main(String[] args) {
