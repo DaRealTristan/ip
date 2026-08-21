@@ -6,6 +6,8 @@ import utils.Deadline;
 import utils.Event;
 import utils.Todo;
 import utils.NubishException;
+import utils.Command;
+import utils.ArgumentToken;
 
 public class Nubish {
     public static void main(String[] args) {
@@ -26,7 +28,7 @@ public class Nubish {
         while (true) {
             String input = scanner.nextLine().trim();
             String[] parts = input.split(" ", 2);
-            String command = parts[0];
+            Command command = Command.fromKeyword(parts[0]);
             String arguments = (parts.length > 1) ? parts[1] : "";
 
             String response = """
@@ -36,10 +38,10 @@ public class Nubish {
                     """;
 
             switch (command) {
-                case "bye":
+                case BYE:
                     System.out.printf(response, "Bye. Hope to see you again soon!");
                     break programmeLoop;
-                case "list":
+                case LIST:
                     StringBuilder list = new StringBuilder("\n");
 
                     for (int i = 0; i < tasks.size(); i++) {
@@ -49,7 +51,7 @@ public class Nubish {
 
                     System.out.printf(response, list);
                     break;
-                case "mark":
+                case MARK:
                     try {
                         if (arguments.isEmpty()) {
                             throw new NubishException("Hrmmm... Please put a valid task number.");
@@ -67,7 +69,7 @@ public class Nubish {
                         System.out.println(e.getMessage());
                     }
                     break;
-                case "unmark":
+                case UNMARK:
                     try {
                         if (arguments.isEmpty()) {
                             throw new NubishException("Hrmmm... Please put a valid task number.");
@@ -85,7 +87,7 @@ public class Nubish {
                         System.out.println(e.getMessage());
                     }
                     break;
-                case "todo":
+                case TODO:
                     try {
                         if (arguments.isEmpty()) {
                             throw new NubishException("Hrmmm... The description of a todo cannot be empty.");
@@ -100,15 +102,15 @@ public class Nubish {
                         System.out.println(e.getMessage());
                     }
                     break;
-                case "deadline":
+                case DEADLINE:
                     try {
-                        int byIndex = arguments.indexOf("/by");
+                        int byIndex = arguments.indexOf(ArgumentToken.BY.getToken());
                         if (byIndex == -1) {
                             throw new NubishException("Hrmmm... Please use the proper format for deadlines: " +
                                     "deadline {taskname} /by {deadline}");
                         }
                         String taskName = arguments.substring(0, byIndex).trim();
-                        String deadline = arguments.substring(byIndex + 3).trim();
+                        String deadline = arguments.substring(byIndex + ArgumentToken.BY.getToken().length()).trim();
                         if (taskName.isEmpty()) {
                             throw new NubishException("Hrmmm... The description of a deadline cannot be empty.");
                         }
@@ -127,10 +129,10 @@ public class Nubish {
                     }
 
                     break;
-                case "event":
+                case EVENT:
                     try {
-                        int fromIndex = arguments.indexOf("/from");
-                        int toIndex = arguments.indexOf("/to");
+                        int fromIndex = arguments.indexOf(ArgumentToken.FROM.getToken());
+                        int toIndex = arguments.indexOf(ArgumentToken.TO.getToken());
 
                         if (fromIndex == -1 || toIndex == -1) {
                             throw new NubishException("Hrmmm... Please use the proper format for events: " +
@@ -138,8 +140,9 @@ public class Nubish {
                         }
 
                         String eventName = arguments.substring(0, fromIndex).trim();
-                        String fromTime = arguments.substring(fromIndex + 5, toIndex).trim();
-                        String toTime = arguments.substring(toIndex + 3).trim();
+                        String fromTime = arguments.substring(
+                                fromIndex + ArgumentToken.FROM.getToken().length(), toIndex).trim();
+                        String toTime = arguments.substring(toIndex + ArgumentToken.TO.getToken().length()).trim();
 
                         if (eventName.isEmpty()) {
                             throw new NubishException("Hrmmm... The name of an event cannot be empty.");
@@ -162,7 +165,7 @@ public class Nubish {
                     }
 
                     break;
-                case "delete":
+                case DELETE:
                     try {
                         if (arguments.isEmpty()) {
                             throw new NubishException("Hrmmm... The description of a todo cannot be empty.");
