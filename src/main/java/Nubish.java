@@ -9,44 +9,17 @@ import utils.*;
 
 
 public class Nubish {
-    public static void readFile(String filepath) throws FileNotFoundException {
-        File f = new File(filepath);
-        Scanner s = new Scanner(f);
-
-        while (s.hasNext()) {
-            String[] line = s.nextLine().split("\\s*\\|\\s*");
-            switch (line[0]) {
-                case "E":
-                    TaskList.add(new Event(Integer.parseInt(line[1]) == 1, line[2], line[3], line[4]));
-                    break;
-                case "T":
-                    TaskList.add(new Todo(Integer.parseInt(line[1]) == 1, line[2]));
-                    break;
-                case "D":
-                    TaskList.add(new Deadline(Integer.parseInt(line[1]) == 1, line[2], line[3]));
-                    break;
-            }
-        }
-    }
-
-    public static void saveFile(String filepath) throws IOException {
-        FileWriter fw = new FileWriter(filepath);
-        for (int i = 0; i < TaskList.size(); i++) {
-            fw.write(TaskList.get(i).saveString() + "\n");
-        }
-
-        fw.close();
-    }
-
     public static void main(String[] args) {
         final String FILEPATH = "./nubish.txt";
+        Storage storage = new Storage();
+        TaskList taskList = new TaskList();
 
         Scanner scanner = new Scanner(System.in);
 
         try {
-            readFile(FILEPATH);
+            storage.load(FILEPATH, taskList);
         } catch (FileNotFoundException e) {
-            System.out.println("No file");
+            System.out.println("No saved file to load from");
         }
 
         String logo = """
@@ -78,8 +51,8 @@ public class Nubish {
                 case LIST:
                     StringBuilder list = new StringBuilder("\n");
 
-                    for (int i = 0; i < TaskList.size(); i++) {
-                        Task t = TaskList.get(i);
+                    for (int i = 0; i < taskList.size(); i++) {
+                        Task t = taskList.get(i);
                         list.append(String.format("%d. %s\n", i + 1, t.toString()));
                     }
 
@@ -91,7 +64,7 @@ public class Nubish {
                             throw new NubishException("Hrmmm... Please put a valid task number.");
                         }
                         int indexMark = Integer.parseInt(arguments.trim()) - 1;
-                        Task tMark = TaskList.get(indexMark);
+                        Task tMark = taskList.get(indexMark);
                         tMark.markAsDone();
                         String replyMark = String.format("""
                             Nice! I've marked this task as done:
@@ -109,7 +82,7 @@ public class Nubish {
                             throw new NubishException("Hrmmm... Please put a valid task number.");
                         }
                         int indexUnmark = Integer.parseInt(arguments.trim()) - 1;
-                        Task tUnmark = TaskList.get(indexUnmark);
+                        Task tUnmark = taskList.get(indexUnmark);
                         tUnmark.unmarkAsDone();
                         String replyUnmark = String.format("""
                             I've unmarked this task:
@@ -126,11 +99,11 @@ public class Nubish {
                         if (arguments.isEmpty()) {
                             throw new NubishException("Hrmmm... The description of a todo cannot be empty.");
                         }
-                        TaskList.add(new Todo(arguments));
+                        taskList.add(new Todo(arguments));
                         System.out.printf(response, String.format("""
                             todo task added: %s
                         Now you have %d tasks in the list.
-                        """, input, TaskList.size()));
+                        """, input, taskList.size()));
                     }
                     catch (NubishException e) {
                         System.out.println(e.getMessage());
@@ -151,11 +124,11 @@ public class Nubish {
                         if (deadline.isEmpty()) {
                             throw new NubishException("Hrmmm... The deadline of the task cannot be empty.");
                         }
-                        TaskList.add(new Deadline(taskName, deadline));
+                        taskList.add(new Deadline(taskName, deadline));
                         String replyDeadline = String.format("""
                                 Added task: %s (by: %s)
                             Now you have %d tasks in the list
-                            """, taskName, deadline, TaskList.size());
+                            """, taskName, deadline, taskList.size());
                         System.out.printf(response, replyDeadline);
                     }
                     catch (NubishException e) {
@@ -190,11 +163,11 @@ public class Nubish {
                         if (toTime.isEmpty()) {
                             throw new NubishException("Hrmmm... The end of an event cannot be empty.");
                         }
-                        TaskList.add(new Event(eventName, fromTime, toTime));
+                        taskList.add(new Event(eventName, fromTime, toTime));
                         String replyEvent = String.format("""
                                 Added event: %s (From: %s, To: %s)
                             Now you have %d tasks in the list
-                            """, eventName, fromTime, toTime, TaskList.size());
+                            """, eventName, fromTime, toTime, taskList.size());
                         System.out.printf(response, replyEvent);
                     }
                     catch (NubishException e) {
@@ -213,12 +186,12 @@ public class Nubish {
 
                         int indexDelete = Integer.parseInt(arguments.trim()) - 1;
 
-                        Task t = TaskList.remove(indexDelete);
+                        Task t = taskList.remove(indexDelete);
                         String replyEvent = String.format("""
                             Ok. I have removed this task:
                                 %s
                             Now you have %d tasks in the list
-                            """, t.toString(), TaskList.size());
+                            """, t.toString(), taskList.size());
                         System.out.printf(response, replyEvent);
                     }
                     catch (NubishException e) {
@@ -239,7 +212,7 @@ public class Nubish {
             }
         }
         try {
-            saveFile(FILEPATH);
+            storage.save(FILEPATH, taskList);
         } catch (IOException e) {
             System.out.printf("OOPs seems like there was an error saving your data: %s", e.getMessage());
         }
