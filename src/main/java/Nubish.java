@@ -1,3 +1,8 @@
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.Scanner;
 import java.util.ArrayList;
 
@@ -10,10 +15,47 @@ import utils.Command;
 import utils.ArgumentToken;
 
 public class Nubish {
+    public static void readFile(String filepath, ArrayList<Task> tasks) throws FileNotFoundException {
+        File f = new File(filepath);
+        Scanner s = new Scanner(f);
+
+        while (s.hasNext()) {
+            String[] line = s.nextLine().split("\\s*\\|\\s*");
+            switch (line[0]) {
+                case "E":
+                    tasks.add(new Event(Integer.parseInt(line[1]) == 1, line[2], line[3], line[4]));
+                    break;
+                case "T":
+                    tasks.add(new Todo(Integer.parseInt(line[1]) == 1, line[2]));
+                    break;
+                case "D":
+                    tasks.add(new Deadline(Integer.parseInt(line[1]) == 1, line[2], line[3]));
+                    break;
+            }
+        }
+    }
+
+    public static void saveFile(String filepath, ArrayList<Task> tasks) throws IOException {
+        FileWriter fw = new FileWriter(filepath);
+        for (Task task : tasks) {
+            fw.write(task.saveString() + "\n");
+        }
+
+        fw.close();
+    }
+
     public static void main(String[] args) {
+        final String FILEPATH = "./nubish.txt";
+
         Scanner scanner = new Scanner(System.in);
         ArrayList<Task> tasks = new ArrayList<>();
         int numOfTasks = 0;
+
+        try {
+            readFile(FILEPATH, tasks);
+        } catch (FileNotFoundException e) {
+            System.out.println("No file");
+        }
 
         String logo = """
               _   _ _   _ ____ ___ ____  _   _ 
@@ -197,6 +239,11 @@ public class Nubish {
                             - delete
                             """);
             }
+        }
+        try {
+            saveFile(FILEPATH, tasks);
+        } catch (IOException e) {
+            System.out.printf("OOPs seems like there was an error saving your data: %s", e.getMessage());
         }
     }
 }

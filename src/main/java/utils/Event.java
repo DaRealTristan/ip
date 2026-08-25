@@ -10,8 +10,18 @@ public class Event extends Task{
         this.to = to;
     }
 
+    public Event(boolean isDone, String description, String from, String to) {
+        super(isDone, description);
+        this.from = from;
+        this.to = to;
+    }
+
     @Override
     public String toString() {
         return String.format("[E]%s (from: %s to: %s)", super.toString(), this.from, this.to);
+    }
+
+    public String saveString() {
+        return String.format("E | %s | %s | %s", super.saveString(), this.from, this.to);
     }
 }
