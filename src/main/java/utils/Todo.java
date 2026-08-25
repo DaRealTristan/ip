@@ -13,4 +13,8 @@ public class Todo extends Task{
     public String toString() {
         return String.format("[T]%s", super.toString());
     }
+
+    public String saveString() {
+        return String.format("T %s", super.saveString());
+    }
 }

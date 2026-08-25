@@ -20,4 +20,8 @@ public class Event extends Task{
     public String toString() {
         return String.format("[E]%s (from: %s to: %s)", super.toString(), this.from, this.to);
     }
+
+    public String saveString() {
+        return String.format("E | %s | %s | %s", super.saveString(), this.from, this.to);
+    }
 }

@@ -1,10 +1,12 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.Scanner;
 import java.util.ArrayList;
 
 import utils.Task;
-import utils.TaskType;
 import utils.Deadline;
 import utils.Event;
 import utils.Todo;
@@ -33,13 +35,24 @@ public class Nubish {
         }
     }
 
+    public static void saveFile(String filepath, ArrayList<Task> tasks) throws IOException {
+        FileWriter fw = new FileWriter(filepath);
+        for (Task task : tasks) {
+            fw.write(task.saveString() + "\n");
+        }
+
+        fw.close();
+    }
+
     public static void main(String[] args) {
+        final String FILEPATH = "./nubish.txt";
+
         Scanner scanner = new Scanner(System.in);
         ArrayList<Task> tasks = new ArrayList<>();
         int numOfTasks = 0;
 
         try {
-            readFile("src/main/java/data/nubish.txt", tasks);
+            readFile(FILEPATH, tasks);
         } catch (FileNotFoundException e) {
             System.out.println("No file");
         }
@@ -226,6 +239,11 @@ public class Nubish {
                             - delete
                             """);
             }
+        }
+        try {
+            saveFile(FILEPATH, tasks);
+        } catch (IOException e) {
+            System.out.printf("OOPs seems like there was an error saving your data: %s", e.getMessage());
         }
     }
 }
