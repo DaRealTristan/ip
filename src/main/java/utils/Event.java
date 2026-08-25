@@ -7,18 +7,18 @@ public class Event extends Task{
     private LocalDateTime from;
     private LocalDateTime to;
     private DateTimeFormatter saveFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy HHmm");
-    private DateTimeFormatter printFormat = DateTimeFormatter.ofPattern("hhmm MMM d yyyy");
+    private DateTimeFormatter printFormat = DateTimeFormatter.ofPattern("HHmm MMM d yyyy");
 
     public Event(String description, String from, String to) {
         super(description);
         this.from = convertToDateTime(from);
-        this.to = convertToDateTime(from);
+        this.to = convertToDateTime(to);
     }
 
     public Event(boolean isDone, String description, String from, String to) {
         super(isDone, description);
         this.from = convertToDateTime(from);
-        this.to = convertToDateTime(from);
+        this.to = convertToDateTime(to);
     }
 
     public LocalDateTime convertToDateTime(String dateTimeString) {
