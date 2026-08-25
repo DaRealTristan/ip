@@ -2,9 +2,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.Files;
+import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 import java.util.ArrayList;
+import java.time.format.DateTimeFormatter;
 
 import utils.Task;
 import utils.Deadline;
@@ -14,10 +15,12 @@ import utils.NubishException;
 import utils.Command;
 import utils.ArgumentToken;
 
+
 public class Nubish {
     public static void readFile(String filepath, ArrayList<Task> tasks) throws FileNotFoundException {
         File f = new File(filepath);
         Scanner s = new Scanner(f);
+        DateTimeFormatter saveFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy hh:mm");
 
         while (s.hasNext()) {
             String[] line = s.nextLine().split("\\s*\\|\\s*");
@@ -49,7 +52,6 @@ public class Nubish {
 
         Scanner scanner = new Scanner(System.in);
         ArrayList<Task> tasks = new ArrayList<>();
-        int numOfTasks = 0;
 
         try {
             readFile(FILEPATH, tasks);
@@ -169,6 +171,9 @@ public class Nubish {
                     catch (NubishException e) {
                         System.out.println(e.getMessage());
                     }
+                    catch (DateTimeParseException e) {
+                        System.out.println("Hrmmm... Please use the proper format for datetimes: dd/mm/yy hh:mm");
+                    }
 
                     break;
                 case EVENT:
@@ -204,6 +209,9 @@ public class Nubish {
                     }
                     catch (NubishException e) {
                         System.out.println(e.getMessage());
+                    }
+                    catch (DateTimeParseException e) {
+                        System.out.println("Hrmmm... Please use the proper format for datetimes: dd/mm/yy hh:mm");
                     }
 
                     break;
