@@ -4,44 +4,35 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.time.format.DateTimeParseException;
 import java.util.Scanner;
-import java.util.ArrayList;
-import java.time.format.DateTimeFormatter;
 
-import utils.Task;
-import utils.Deadline;
-import utils.Event;
-import utils.Todo;
-import utils.NubishException;
-import utils.Command;
-import utils.ArgumentToken;
+import utils.*;
 
 
 public class Nubish {
-    public static void readFile(String filepath, ArrayList<Task> tasks) throws FileNotFoundException {
+    public static void readFile(String filepath) throws FileNotFoundException {
         File f = new File(filepath);
         Scanner s = new Scanner(f);
-        DateTimeFormatter saveFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy hh:mm");
 
         while (s.hasNext()) {
             String[] line = s.nextLine().split("\\s*\\|\\s*");
             switch (line[0]) {
                 case "E":
-                    tasks.add(new Event(Integer.parseInt(line[1]) == 1, line[2], line[3], line[4]));
+                    TaskList.add(new Event(Integer.parseInt(line[1]) == 1, line[2], line[3], line[4]));
                     break;
                 case "T":
-                    tasks.add(new Todo(Integer.parseInt(line[1]) == 1, line[2]));
+                    TaskList.add(new Todo(Integer.parseInt(line[1]) == 1, line[2]));
                     break;
                 case "D":
-                    tasks.add(new Deadline(Integer.parseInt(line[1]) == 1, line[2], line[3]));
+                    TaskList.add(new Deadline(Integer.parseInt(line[1]) == 1, line[2], line[3]));
                     break;
             }
         }
     }
 
-    public static void saveFile(String filepath, ArrayList<Task> tasks) throws IOException {
+    public static void saveFile(String filepath) throws IOException {
         FileWriter fw = new FileWriter(filepath);
-        for (Task task : tasks) {
-            fw.write(task.saveString() + "\n");
+        for (int i = 0; i < TaskList.size(); i++) {
+            fw.write(TaskList.get(i).saveString() + "\n");
         }
 
         fw.close();
@@ -51,10 +42,9 @@ public class Nubish {
         final String FILEPATH = "./nubish.txt";
 
         Scanner scanner = new Scanner(System.in);
-        ArrayList<Task> tasks = new ArrayList<>();
 
         try {
-            readFile(FILEPATH, tasks);
+            readFile(FILEPATH);
         } catch (FileNotFoundException e) {
             System.out.println("No file");
         }
@@ -88,8 +78,8 @@ public class Nubish {
                 case LIST:
                     StringBuilder list = new StringBuilder("\n");
 
-                    for (int i = 0; i < tasks.size(); i++) {
-                        Task t = tasks.get(i);
+                    for (int i = 0; i < TaskList.size(); i++) {
+                        Task t = TaskList.get(i);
                         list.append(String.format("%d. %s\n", i + 1, t.toString()));
                     }
 
@@ -101,7 +91,7 @@ public class Nubish {
                             throw new NubishException("Hrmmm... Please put a valid task number.");
                         }
                         int indexMark = Integer.parseInt(arguments.trim()) - 1;
-                        Task tMark = tasks.get(indexMark);
+                        Task tMark = TaskList.get(indexMark);
                         tMark.markAsDone();
                         String replyMark = String.format("""
                             Nice! I've marked this task as done:
@@ -119,7 +109,7 @@ public class Nubish {
                             throw new NubishException("Hrmmm... Please put a valid task number.");
                         }
                         int indexUnmark = Integer.parseInt(arguments.trim()) - 1;
-                        Task tUnmark = tasks.get(indexUnmark);
+                        Task tUnmark = TaskList.get(indexUnmark);
                         tUnmark.unmarkAsDone();
                         String replyUnmark = String.format("""
                             I've unmarked this task:
@@ -136,11 +126,11 @@ public class Nubish {
                         if (arguments.isEmpty()) {
                             throw new NubishException("Hrmmm... The description of a todo cannot be empty.");
                         }
-                        tasks.add(new Todo(arguments));
+                        TaskList.add(new Todo(arguments));
                         System.out.printf(response, String.format("""
                             todo task added: %s
                         Now you have %d tasks in the list.
-                        """, input, tasks.size()));
+                        """, input, TaskList.size()));
                     }
                     catch (NubishException e) {
                         System.out.println(e.getMessage());
@@ -161,18 +151,18 @@ public class Nubish {
                         if (deadline.isEmpty()) {
                             throw new NubishException("Hrmmm... The deadline of the task cannot be empty.");
                         }
-                        tasks.add(new Deadline(taskName, deadline));
+                        TaskList.add(new Deadline(taskName, deadline));
                         String replyDeadline = String.format("""
                                 Added task: %s (by: %s)
                             Now you have %d tasks in the list
-                            """, taskName, deadline, tasks.size());
+                            """, taskName, deadline, TaskList.size());
                         System.out.printf(response, replyDeadline);
                     }
                     catch (NubishException e) {
                         System.out.println(e.getMessage());
                     }
                     catch (DateTimeParseException e) {
-                        System.out.println("Hrmmm... Please use the proper format for datetimes: dd/mm/yy hh:mm");
+                        System.out.println("Hrmmm... Please use the proper format for datetimes: dd/MM/yyyyy hhmm");
                     }
 
                     break;
@@ -200,18 +190,18 @@ public class Nubish {
                         if (toTime.isEmpty()) {
                             throw new NubishException("Hrmmm... The end of an event cannot be empty.");
                         }
-                        tasks.add(new Event(eventName, fromTime, toTime));
+                        TaskList.add(new Event(eventName, fromTime, toTime));
                         String replyEvent = String.format("""
                                 Added event: %s (From: %s, To: %s)
                             Now you have %d tasks in the list
-                            """, eventName, fromTime, toTime, tasks.size());
+                            """, eventName, fromTime, toTime, TaskList.size());
                         System.out.printf(response, replyEvent);
                     }
                     catch (NubishException e) {
                         System.out.println(e.getMessage());
                     }
                     catch (DateTimeParseException e) {
-                        System.out.println("Hrmmm... Please use the proper format for datetimes: dd/mm/yy hh:mm");
+                        System.out.println("Hrmmm... Please use the proper format for datetimes: dd/MM/yyyyy hhmm");
                     }
 
                     break;
@@ -223,12 +213,12 @@ public class Nubish {
 
                         int indexDelete = Integer.parseInt(arguments.trim()) - 1;
 
-                        Task t = tasks.remove(indexDelete);
+                        Task t = TaskList.remove(indexDelete);
                         String replyEvent = String.format("""
                             Ok. I have removed this task:
                                 %s
                             Now you have %d tasks in the list
-                            """, t.toString(), tasks.size());
+                            """, t.toString(), TaskList.size());
                         System.out.printf(response, replyEvent);
                     }
                     catch (NubishException e) {
@@ -249,7 +239,7 @@ public class Nubish {
             }
         }
         try {
-            saveFile(FILEPATH, tasks);
+            saveFile(FILEPATH);
         } catch (IOException e) {
             System.out.printf("OOPs seems like there was an error saving your data: %s", e.getMessage());
         }
