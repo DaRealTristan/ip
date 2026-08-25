@@ -1,7 +1,10 @@
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.Scanner;
 import java.util.ArrayList;
 
 import utils.Task;
+import utils.TaskType;
 import utils.Deadline;
 import utils.Event;
 import utils.Todo;
@@ -10,10 +13,31 @@ import utils.Command;
 import utils.ArgumentToken;
 
 public class Nubish {
+    public static void readFile(String filepath, ArrayList<Task> tasks) throws FileNotFoundException {
+        File f = new File(filepath);
+        Scanner s = new Scanner(f);
+
+        while (s.hasNext()) {
+            String[] line = s.nextLine().split("//|");
+            switch (line[0]) {
+                case "E":
+                case "T":
+
+                case "D":
+            }
+        }
+    }
+
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         ArrayList<Task> tasks = new ArrayList<>();
         int numOfTasks = 0;
+
+        try {
+            readFile("src/main/java/data/nubish.txt", tasks);
+        } catch (FileNotFoundException e) {
+            System.out.println("No file");
+        }
 
         String logo = """
               _   _ _   _ ____ ___ ____  _   _ 
