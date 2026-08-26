@@ -38,6 +38,8 @@ public class Todo extends Task{
      *
      * @return formatted todo string suitable for saving to disk
      */
+
+    @Override
     public String saveString() {
         return String.format("T | %s", super.saveString());
     }

@@ -5,7 +5,7 @@ package nubish.utils;
  */
 public class NubishException extends RuntimeException{
     /**
-     * Creates a Nubish exception without a detail message.
+     * Creates an exception without a detail message.
      */
     public NubishException() {
         super();

@@ -4,11 +4,10 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Scanner;
 
-import nubish.utils.Storage;
 import nubish.utils.Parser;
+import nubish.utils.Storage;
 import nubish.utils.TaskList;
 import nubish.utils.UI;
-
 
 /**
  * Entry point and coordinator for the Nubish task manager application.
@@ -63,7 +62,7 @@ public class Nubish {
      * @param args command line arguments, currently unused
      */
     public static void main(String[] args) {
-        final String FILEPATH = "./nubish.txt";
-        new Nubish(FILEPATH).run();
+        final String filepath = "./nubish.txt";
+        new Nubish(filepath).run();
     }
 }

@@ -65,17 +65,12 @@ public class Task {
      *
      * @return formatted task string with its status icon and description
      */
+    public String saveString() {
+        return String.format("%d | %s", isDone ? 1 : 0, this.description);
+    }
+
     @Override
     public String toString() {
         return String.format("[%s] %s", this.getStatusIcon(), this.description);
-    }
-
-    /**
-     * Returns the storage representation of this task.
-     *
-     * @return formatted task string suitable for saving to disk
-     */
-    public String saveString() {
-        return String.format("%d | %s", isDone ? 1 : 0, this.description);
     }
 }

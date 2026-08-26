@@ -4,7 +4,7 @@ package nubish.utils;
  * Handles all messages printed to the user.
  */
 public class UI {
-    private String response = """
+    private static final String RESPONSE = """
                     _________________________________________________
                     Nubish: %s
                     _________________________________________________
@@ -28,7 +28,7 @@ public class UI {
      * Prints the farewell message shown when Nubish exits.
      */
     public void bye() {
-        System.out.printf(response, "Bye. Hope to see you again soon!");
+        System.out.printf(RESPONSE, "Bye. Hope to see you again soon!");
     }
 
     /**
@@ -37,7 +37,7 @@ public class UI {
      * @param list formatted list of tasks
      */
     public void printList(String list) {
-        System.out.printf(response, list);
+        System.out.printf(RESPONSE, list);
     }
 
     /**
@@ -51,7 +51,7 @@ public class UI {
                                 %s
                             """, task);
 
-        System.out.printf(response, replyMark);
+        System.out.printf(RESPONSE, replyMark);
     }
 
     /**
@@ -65,7 +65,7 @@ public class UI {
                                 %s
                             """, task);
 
-        System.out.printf(response, replyUnmark);
+        System.out.printf(RESPONSE, replyUnmark);
     }
 
     /**
@@ -79,7 +79,7 @@ public class UI {
                                 todo task added: %s
                             Now you have %d tasks in the list.
                             """, input, size);
-        System.out.printf(response, replyTodo);
+        System.out.printf(RESPONSE, replyTodo);
     }
 
     /**
@@ -94,7 +94,7 @@ public class UI {
                                 Added task: %s (by: %s)
                             Now you have %d tasks in the list
                             """, taskName, deadline, size);
-        System.out.printf(response, replyDeadline);
+        System.out.printf(RESPONSE, replyDeadline);
     }
 
     /**
@@ -110,7 +110,7 @@ public class UI {
                                 Added event: %s (From: %s, To: %s)
                             Now you have %d tasks in the list
                             """, eventName, fromTime, toTime, size);
-        System.out.printf(response, replyEvent);
+        System.out.printf(RESPONSE, replyEvent);
     }
 
     /**
@@ -126,7 +126,7 @@ public class UI {
                             Now you have %d tasks in the list
                             """, task, size);
 
-        System.out.printf(response, replyDelete);
+        System.out.printf(RESPONSE, replyDelete);
     }
 
     /**
@@ -143,6 +143,6 @@ public class UI {
                         - unmark
                         - delete
                         """;
-        System.out.printf(response, cmd);
+        System.out.printf(RESPONSE, cmd);
     }
 }

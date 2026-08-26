@@ -1,7 +1,7 @@
 package nubish.utils;
 
 /**
- * Represents the commands understood by Nubish.
+ * Represents supported user commands and their text keywords.
  */
 public enum Command {
     BYE("bye"),
