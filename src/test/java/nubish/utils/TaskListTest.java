@@ -6,7 +6,13 @@ import nubish.tasks.Task;
 import nubish.tasks.Todo;
 import org.junit.jupiter.api.Test;
 
+/**
+ * Tests task list creation and task insertion behavior.
+ */
 public class TaskListTest {
+    /**
+     * Verifies that a newly created task list has no tasks.
+     */
     @Test
     public void creating_newTaskList_createsAnEmptyList() {
         TaskList taskList = new TaskList();
@@ -14,6 +20,9 @@ public class TaskListTest {
         assertEquals(0, taskList.size());
     }
 
+    /**
+     * Verifies that adding a task increases the list size and stores the task.
+     */
     @Test
     public void adding_to_newTaskList_works() {
         TaskList taskList = new TaskList();

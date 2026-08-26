@@ -8,6 +8,9 @@ import org.junit.jupiter.api.Test;
  * Tests for the status icon returned by {@link Task}.
  */
 public class TaskTest {
+    /**
+     * Verifies that a new task starts as not done.
+     */
     @Test
     public void getStatusIcon_newTask_returnsUndoneIcon() {
         Task task = new Task("read book");
@@ -15,6 +18,9 @@ public class TaskTest {
         assertEquals(" ", task.getStatusIcon());
     }
 
+    /**
+     * Verifies that a loaded done task shows the done icon.
+     */
     @Test
     public void getStatusIcon_savedDoneTask_returnsDoneIcon() {
         Task task = new Task(true, "read book");
@@ -22,6 +28,9 @@ public class TaskTest {
         assertEquals("X", task.getStatusIcon());
     }
 
+    /**
+     * Verifies that a loaded undone task shows the undone icon.
+     */
     @Test
     public void getStatusIcon_savedUndoneTask_returnsUndoneIcon() {
         Task task = new Task(false, "read book");
@@ -29,6 +38,9 @@ public class TaskTest {
         assertEquals(" ", task.getStatusIcon());
     }
 
+    /**
+     * Verifies that marking a task changes its status icon to done.
+     */
     @Test
     public void getStatusIcon_markedTask_returnsDoneIcon() {
         Task task = new Task("read book");
@@ -38,6 +50,9 @@ public class TaskTest {
         assertEquals("X", task.getStatusIcon());
     }
 
+    /**
+     * Verifies that unmarking a task changes its status icon to undone.
+     */
     @Test
     public void getStatusIcon_unmarkedTask_returnsUndoneIcon() {
         Task task = new Task(true, "read book");

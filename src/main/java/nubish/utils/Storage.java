@@ -10,15 +10,29 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
 
+/**
+ * Handles loading tasks from disk and saving tasks back to disk.
+ */
 public class Storage {
     private final String filepath;
     private final TaskList taskList;
 
+    /**
+     * Creates storage backed by the given file path and task list.
+     *
+     * @param filepath path to the save file
+     * @param taskList task list to load into and save from
+     */
     public Storage(String filepath, TaskList taskList) {
         this.filepath = filepath;
         this.taskList = taskList;
     }
 
+    /**
+     * Loads saved tasks from the configured file into the task list.
+     *
+     * @throws FileNotFoundException if the save file does not exist
+     */
     public void load() throws FileNotFoundException {
         File f = new File(this.filepath);
         Scanner s = new Scanner(f);
@@ -39,6 +53,11 @@ public class Storage {
         }
     }
 
+    /**
+     * Saves all tasks in the task list to the configured file.
+     *
+     * @throws IOException if the file cannot be written
+     */
     public void save() throws IOException {
         FileWriter fw = new FileWriter(this.filepath);
         for (int i = 0; i < this.taskList.size(); i++) {
