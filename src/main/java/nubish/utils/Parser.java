@@ -1,23 +1,34 @@
 package nubish.utils;
 
+import java.time.format.DateTimeParseException;
+
 import nubish.tasks.Deadline;
 import nubish.tasks.Event;
 import nubish.tasks.Task;
 import nubish.tasks.Todo;
 
-import java.time.format.DateTimeParseException;
-
+/**
+ * Parses user input and dispatches the corresponding Nubish command.
+ */
 public class Parser {
-    Storage storage;
-    UI ui;
-    TaskList taskList;
+    private final Storage storage;
+    private final UI ui;
+    private final TaskList taskList;
 
+    /**
+     * Creates a parser that can update storage, UI, and the task list.
+     */
     public Parser(Storage storage, UI ui, TaskList taskList) {
         this.storage = storage;
         this.ui = ui;
         this.taskList = taskList;
     }
 
+    /**
+     * Executes the command represented by the user's input.
+     *
+     * @return True if Nubish should continue reading commands.
+     */
     public boolean parse(String input) {
         String[] parts = input.split(" ", 2);
         Command command = Command.fromKeyword(parts[0]);
@@ -31,8 +42,8 @@ public class Parser {
                 StringBuilder list = new StringBuilder("\n");
 
                 for (int i = 0; i < taskList.size(); i++) {
-                    Task t = taskList.get(i);
-                    list.append(String.format("%d. %s\n", i + 1, t.toString()));
+                    Task task = taskList.get(i);
+                    list.append(String.format("%d. %s\n", i + 1, task.toString()));
                 }
 
                 ui.printList(list.toString());
@@ -43,9 +54,9 @@ public class Parser {
                         throw new NubishException("Hrmmm... Please put a valid task number.");
                     }
                     int indexMark = Integer.parseInt(arguments.trim()) - 1;
-                    Task tMark = taskList.get(indexMark);
-                    tMark.markAsDone();
-                    ui.mark(tMark.toString());
+                    Task taskToMark = taskList.get(indexMark);
+                    taskToMark.markAsDone();
+                    ui.mark(taskToMark.toString());
                 } catch (NubishException e) {
                     System.out.println(e.getMessage());
                 }
@@ -56,9 +67,9 @@ public class Parser {
                         throw new NubishException("Hrmmm... Please put a valid task number.");
                     }
                     int indexUnmark = Integer.parseInt(arguments.trim()) - 1;
-                    Task tUnmark = taskList.get(indexUnmark);
-                    tUnmark.unmarkAsDone();
-                    ui.unmark(tUnmark.toString());
+                    Task taskToUnmark = taskList.get(indexUnmark);
+                    taskToUnmark.unmarkAsDone();
+                    ui.unmark(taskToUnmark.toString());
                 } catch (NubishException e) {
                     System.out.println(e.getMessage());
                 }
@@ -139,8 +150,8 @@ public class Parser {
 
                     int indexDelete = Integer.parseInt(arguments.trim()) - 1;
 
-                    Task t = taskList.remove(indexDelete);
-                    ui.delete(t.toString(), taskList.size());
+                    Task task = taskList.remove(indexDelete);
+                    ui.delete(task.toString(), taskList.size());
                 } catch (NubishException e) {
                     System.out.printf(e.getMessage());
                 }

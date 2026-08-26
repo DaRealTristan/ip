@@ -1,5 +1,8 @@
 package nubish.utils;
 
+/**
+ * Represents the display icons for task completion states.
+ */
 public enum TaskStatus {
     NOT_DONE(" "),
     DONE("X");

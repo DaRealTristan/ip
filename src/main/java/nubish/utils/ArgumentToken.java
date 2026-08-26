@@ -1,5 +1,8 @@
 package nubish.utils;
 
+/**
+ * Represents argument separator tokens used in command input.
+ */
 public enum ArgumentToken {
     BY("/by"),
     FROM("/from"),

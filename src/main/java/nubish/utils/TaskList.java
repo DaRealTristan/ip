@@ -1,26 +1,41 @@
 package nubish.utils;
 
-import nubish.tasks.Task;
-
 import java.util.ArrayList;
 import java.util.List;
 
+import nubish.tasks.Task;
+
+/**
+ * Stores and provides access to the current tasks.
+ */
 public class TaskList {
-    private List<Task> tasklist = new ArrayList<>();
+    private final List<Task> tasks = new ArrayList<>();
 
+    /**
+     * Adds a task to the end of the list.
+     */
     public void add(Task task) {
-        tasklist.add(task);
+        tasks.add(task);
     }
 
-    public Task remove(int i) {
-        return tasklist.remove(i);
+    /**
+     * Removes and returns the task at the specified zero-based index.
+     */
+    public Task remove(int index) {
+        return tasks.remove(index);
     }
 
+    /**
+     * Returns the number of tasks in the list.
+     */
     public int size() {
-        return tasklist.size();
+        return tasks.size();
     }
 
-    public Task get(int i) {
-        return tasklist.get(i);
+    /**
+     * Returns the task at the specified zero-based index.
+     */
+    public Task get(int index) {
+        return tasks.get(index);
     }
 }

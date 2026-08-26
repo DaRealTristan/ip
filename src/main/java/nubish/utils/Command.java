@@ -1,5 +1,8 @@
 package nubish.utils;
 
+/**
+ * Represents supported user commands and their text keywords.
+ */
 public enum Command {
     BYE("bye"),
     LIST("list"),
@@ -17,6 +20,9 @@ public enum Command {
         this.keyword = keyword;
     }
 
+    /**
+     * Returns the command that matches the specified keyword, or {@code UNKNOWN} if none matches.
+     */
     public static Command fromKeyword(String keyword) {
         for (Command command : values()) {
             if (command.keyword.equals(keyword)) {

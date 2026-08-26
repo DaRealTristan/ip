@@ -4,18 +4,23 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Scanner;
 
-import nubish.utils.Storage;
 import nubish.utils.Parser;
+import nubish.utils.Storage;
 import nubish.utils.TaskList;
 import nubish.utils.UI;
 
-
+/**
+ * Runs the Nubish command-line task manager.
+ */
 public class Nubish {
     private final Storage storage;
     private final TaskList taskList;
     private final UI ui;
     private final Parser parser;
 
+    /**
+     * Creates a Nubish instance that stores tasks at the specified file path.
+     */
     public Nubish(String filepath) {
         this.ui = new UI();
         this.taskList = new TaskList();
@@ -23,6 +28,9 @@ public class Nubish {
         this.parser = new Parser(this.storage, this.ui, this.taskList);
     }
 
+    /**
+     * Starts the main command loop and saves tasks before exiting.
+     */
     public void run() {
         Scanner scanner = new Scanner(System.in);
 
@@ -46,8 +54,11 @@ public class Nubish {
         }
     }
 
+    /**
+     * Starts Nubish with the default save file.
+     */
     public static void main(String[] args) {
-        final String FILEPATH = "./nubish.txt";
-        new Nubish(FILEPATH).run();
+        final String filepath = "./nubish.txt";
+        new Nubish(filepath).run();
     }
 }
