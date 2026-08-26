@@ -46,14 +46,7 @@ public class Parser {
                 ui.bye();
                 return false;
             case LIST:
-                StringBuilder list = new StringBuilder("\n");
-
-                for (int i = 0; i < taskList.size(); i++) {
-                    Task task = taskList.get(i);
-                    list.append(String.format("%d. %s\n", i + 1, task.toString()));
-                }
-
-                ui.printList(list.toString());
+                ui.printList(taskList.toString());
                 break;
             case MARK:
                 try {
@@ -159,6 +152,18 @@ public class Parser {
 
                     Task task = taskList.remove(indexDelete);
                     ui.delete(task.toString(), taskList.size());
+                } catch (NubishException e) {
+                    System.out.printf(e.getMessage());
+                }
+                break;
+            case FIND:
+                try {
+                    if (arguments.isEmpty()) {
+                        throw new NubishException("Hrmmm... Please enter keywords to search for");
+                    }
+
+                    TaskList foundList = taskList.find(arguments);
+                    ui.find(foundList.toString());
                 } catch (NubishException e) {
                     System.out.printf(e.getMessage());
                 }

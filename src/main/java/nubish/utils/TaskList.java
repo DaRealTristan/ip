@@ -49,4 +49,27 @@ public class TaskList {
     public Task get(int index) {
         return tasks.get(index);
     }
+
+    public TaskList find(String keyword) {
+        TaskList tasklist = new TaskList();
+
+        for (Task t: this.tasklist) {
+            if (t.getDescription().contains(keyword)) {
+                tasklist.add(t);
+            }
+        }
+
+        return tasklist;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder list = new StringBuilder("\n");
+        for (int i = 0; i < this.tasklist.size(); i++) {
+            Task t = this.get(i);
+            list.append(String.format("%d. %s\n", i + 1, t.toString()));
+        }
+
+        return (list.toString());
+    }
 }
