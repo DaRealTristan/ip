@@ -10,12 +10,20 @@ import nubish.utils.TaskList;
 import nubish.utils.UI;
 
 
+/**
+ * Entry point and coordinator for the Nubish task manager application.
+ */
 public class Nubish {
     private final Storage storage;
     private final TaskList taskList;
     private final UI ui;
     private final Parser parser;
 
+    /**
+     * Creates a Nubish application that saves and loads tasks from the given file.
+     *
+     * @param filepath path to the save file used by storage
+     */
     public Nubish(String filepath) {
         this.ui = new UI();
         this.taskList = new TaskList();
@@ -23,6 +31,9 @@ public class Nubish {
         this.parser = new Parser(this.storage, this.ui, this.taskList);
     }
 
+    /**
+     * Starts the command loop, loads saved tasks, and saves tasks before exiting.
+     */
     public void run() {
         Scanner scanner = new Scanner(System.in);
 
@@ -46,6 +57,11 @@ public class Nubish {
         }
     }
 
+    /**
+     * Launches the Nubish application.
+     *
+     * @param args command line arguments, currently unused
+     */
     public static void main(String[] args) {
         final String FILEPATH = "./nubish.txt";
         new Nubish(FILEPATH).run();

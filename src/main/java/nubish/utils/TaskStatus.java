@@ -1,5 +1,8 @@
 package nubish.utils;
 
+/**
+ * Represents completion status icons used for tasks.
+ */
 public enum TaskStatus {
     NOT_DONE(" "),
     DONE("X");
@@ -10,6 +13,11 @@ public enum TaskStatus {
         this.icon = icon;
     }
 
+    /**
+     * Returns the icon displayed for this status.
+     *
+     * @return status icon
+     */
     public String getIcon() {
         return icon;
     }

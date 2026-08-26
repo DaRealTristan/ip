@@ -7,17 +7,33 @@ import nubish.tasks.Todo;
 
 import java.time.format.DateTimeParseException;
 
+/**
+ * Parses user commands and applies the requested changes to the task list.
+ */
 public class Parser {
     Storage storage;
     UI ui;
     TaskList taskList;
 
+    /**
+     * Creates a parser that coordinates storage, UI output, and task list updates.
+     *
+     * @param storage storage used by the application
+     * @param ui user interface used to display command results
+     * @param taskList task list modified by parsed commands
+     */
     public Parser(Storage storage, UI ui, TaskList taskList) {
         this.storage = storage;
         this.ui = ui;
         this.taskList = taskList;
     }
 
+    /**
+     * Parses and executes one line of user input.
+     *
+     * @param input raw user command
+     * @return {@code false} when the command requests exit, or {@code true} otherwise
+     */
     public boolean parse(String input) {
         String[] parts = input.split(" ", 2);
         Command command = Command.fromKeyword(parts[0]);
