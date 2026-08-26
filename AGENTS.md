@@ -37,6 +37,9 @@ Ensure that Java 25 is used when running the application or build tasks. On macO
 
 ## Git
 
+Use the `$seedu-git-standard` skill for all future commit messages, commit planning, branch names, and Git workflow guidance in this project.
+All future commits must follow the SE-EDU Git conventions at
+https://se-education.org/guides/conventions/git.html.
 Use lightweight tags unless the user requests an annotated tag.
 When proposing or creating a commit message, include enough detail to explain the rationale for the change.
 Do not commit or push unless explicitly asked.
