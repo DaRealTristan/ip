@@ -88,7 +88,16 @@ public class UI {
                         - mark
                         - unmark
                         - delete
+                        - find
                         """;
         System.out.printf(response, cmd);
+    }
+
+    public void find(String foundList) {
+        String found = String.format("""
+                    Here are the matching tasks in your list:
+                    %s
+                """, foundList);
+        System.out.printf(response, found);
     }
 }
