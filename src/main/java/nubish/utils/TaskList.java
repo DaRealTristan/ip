@@ -1,4 +1,6 @@
-package utils;
+package nubish.utils;
+
+import nubish.tasks.Task;
 
 import java.util.ArrayList;
 import java.util.List;

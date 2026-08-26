@@ -1,4 +1,4 @@
-package utils;
+package nubish.utils;
 
 public class UI {
     private String response = """

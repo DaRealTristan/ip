@@ -1,4 +1,4 @@
-package utils;
+package nubish.tasks;
 
 public class Todo extends Task{
     public Todo(String description) {

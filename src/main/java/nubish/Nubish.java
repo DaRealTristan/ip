@@ -1,8 +1,13 @@
+package nubish;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Scanner;
 
-import utils.*;
+import nubish.utils.Storage;
+import nubish.utils.Parser;
+import nubish.utils.TaskList;
+import nubish.utils.UI;
 
 
 public class Nubish {

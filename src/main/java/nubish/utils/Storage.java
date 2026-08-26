@@ -1,4 +1,8 @@
-package utils;
+package nubish.utils;
+
+import nubish.tasks.Deadline;
+import nubish.tasks.Event;
+import nubish.tasks.Todo;
 
 import java.io.File;
 import java.io.FileNotFoundException;
