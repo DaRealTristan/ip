@@ -18,8 +18,7 @@ public class Deadline extends Task{
         this.deadline = convertToDateTime(deadline);
     }
 
-    public LocalDateTime convertToDateTime(String dateTimeString) {
-        System.out.println(dateTimeString);
+    private LocalDateTime convertToDateTime(String dateTimeString) {
         return LocalDateTime.parse(dateTimeString, saveFormat);
     }
 

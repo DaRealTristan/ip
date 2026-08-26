@@ -15,6 +15,6 @@ public class Todo extends Task{
     }
 
     public String saveString() {
-        return String.format("T %s", super.saveString());
+        return String.format("T | %s", super.saveString());
     }
 }
