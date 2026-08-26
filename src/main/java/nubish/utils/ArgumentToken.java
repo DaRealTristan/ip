@@ -1,4 +1,4 @@
-package utils;
+package nubish.utils;
 
 public enum ArgumentToken {
     BY("/by"),

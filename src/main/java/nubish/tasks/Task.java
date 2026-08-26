@@ -1,4 +1,4 @@
-package utils;
+package nubish.tasks;
 
 public class Task {
     private String description;

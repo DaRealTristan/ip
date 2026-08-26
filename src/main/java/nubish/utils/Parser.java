@@ -1,4 +1,9 @@
-package utils;
+package nubish.utils;
+
+import nubish.tasks.Deadline;
+import nubish.tasks.Event;
+import nubish.tasks.Task;
+import nubish.tasks.Todo;
 
 import java.time.format.DateTimeParseException;
 
