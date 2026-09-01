@@ -3,7 +3,6 @@ package nubish.utils;
 import java.util.ArrayList;
 import java.util.List;
 
-
 import nubish.tasks.Task;
 
 /**
@@ -24,7 +23,7 @@ public class TaskList {
     /**
      * Removes and returns the task at the given zero-based index.
      *
-     * @param i zero-based index of the task to remove
+     * @param index zero-based index of the task to remove
      * @return removed task
      */
     public Task remove(int index) {
@@ -43,17 +42,23 @@ public class TaskList {
     /**
      * Returns the task at the given zero-based index.
      *
-     * @param i zero-based index of the task to retrieve
+     * @param index zero-based index of the task to retrieve
      * @return task at the given index
      */
     public Task get(int index) {
         return tasks.get(index);
     }
 
+    /**
+     * Returns a task list containing tasks whose descriptions contain the keyword.
+     *
+     * @param keyword text to search for in task descriptions
+     * @return task list containing matching tasks
+     */
     public TaskList find(String keyword) {
         TaskList tasklist = new TaskList();
 
-        for (Task t: this.tasklist) {
+        for (Task t: this.tasks) {
             if (t.getDescription().contains(keyword)) {
                 tasklist.add(t);
             }
@@ -65,7 +70,7 @@ public class TaskList {
     @Override
     public String toString() {
         StringBuilder list = new StringBuilder("\n");
-        for (int i = 0; i < this.tasklist.size(); i++) {
+        for (int i = 0; i < this.tasks.size(); i++) {
             Task t = this.get(i);
             list.append(String.format("%d. %s\n", i + 1, t.toString()));
         }

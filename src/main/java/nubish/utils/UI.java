@@ -15,7 +15,7 @@ public class UI {
      */
     public void greet() {
         String logo = """
-              _   _ _   _ ____ ___ ____  _   _ 
+              _   _ _   _ ____ ___ ____  _   _
              | \\ | | | | | __ )_ _/ ___|| | | |
              |  \\| | | | |  _ \\| |\\___ \\| |_| |
              | |\\  | |_| | |_) | | ___) |  _  |
@@ -147,11 +147,16 @@ public class UI {
         System.out.printf(RESPONSE, cmd);
     }
 
+    /**
+     * Prints the list of tasks whose descriptions matched the search keyword.
+     *
+     * @param foundList formatted list of matching tasks
+     */
     public void find(String foundList) {
         String found = String.format("""
                     Here are the matching tasks in your list:
                     %s
                 """, foundList);
-        System.out.printf(response, found);
+        System.out.printf(RESPONSE, found);
     }
 }

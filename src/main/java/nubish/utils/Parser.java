@@ -7,8 +7,6 @@ import nubish.tasks.Event;
 import nubish.tasks.Task;
 import nubish.tasks.Todo;
 
-import java.time.format.DateTimeParseException;
-
 /**
  * Parses user commands and applies the requested changes to the task list.
  */
@@ -89,8 +87,8 @@ public class Parser {
                 try {
                     int byIndex = arguments.indexOf(ArgumentToken.BY.getToken());
                     if (byIndex == -1) {
-                        throw new NubishException("Hrmmm... Please use the proper format for deadlines: " +
-                                "deadline {taskname} /by {deadline}");
+                        throw new NubishException("Hrmmm... Please use the proper format for deadlines: "
+                                + "deadline {taskname} /by {deadline}");
                     }
                     String taskName = arguments.substring(0, byIndex).trim();
                     String deadline = arguments.substring(byIndex + ArgumentToken.BY.getToken().length()).trim();
@@ -115,8 +113,8 @@ public class Parser {
                     int toIndex = arguments.indexOf(ArgumentToken.TO.getToken());
 
                     if (fromIndex == -1 || toIndex == -1) {
-                        throw new NubishException("Hrmmm... Please use the proper format for events: " +
-                                "event {eventName} /from {startDate} /to {enddate}");
+                        throw new NubishException("Hrmmm... Please use the proper format for events: "
+                                + "event {eventName} /from {startDate} /to {enddate}");
                     }
 
                     String eventName = arguments.substring(0, fromIndex).trim();
