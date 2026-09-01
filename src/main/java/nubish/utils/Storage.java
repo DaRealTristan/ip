@@ -50,6 +50,8 @@ public class Storage {
                 case "D":
                     this.taskList.add(new Deadline(Integer.parseInt(line[1]) == 1, line[2], line[3]));
                     break;
+                default:
+                    break;
             }
         }
     }

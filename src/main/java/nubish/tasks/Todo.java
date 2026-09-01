@@ -3,7 +3,7 @@ package nubish.tasks;
 /**
  * Represents a simple task without date or time information.
  */
-public class Todo extends Task{
+public class Todo extends Task {
     /**
      * Creates an incomplete todo task with the given description.
      *

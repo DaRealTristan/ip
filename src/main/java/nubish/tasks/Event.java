@@ -60,7 +60,6 @@ public class Event extends Task {
         return String.format("[E]%s (from: %s to: %s)", super.toString(), this.from.format(PRINT_FORMAT),
                 this.to.format(PRINT_FORMAT));
     }
-    
     /**
      * Returns the storage representation of this event task.
      *

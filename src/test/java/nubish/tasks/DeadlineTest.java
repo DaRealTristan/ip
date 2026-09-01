@@ -1,11 +1,11 @@
 package nubish.tasks;
 
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.time.format.DateTimeParseException;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import org.junit.jupiter.api.Test;
 
 /**
  * Tests deadline task status, saving, and date parsing behavior.
@@ -26,7 +26,7 @@ public class DeadlineTest {
      */
     @Test
     public void getStatusIcon_savedDoneDeadline_returnsDoneIcon() {
-        Task task = new Deadline(true ,"read book", "12/10/2020 1800");
+        Task task = new Deadline(true, "read book", "12/10/2020 1800");
 
         assertEquals("X", task.getStatusIcon());
     }
