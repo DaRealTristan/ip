@@ -9,26 +9,46 @@ public class UI {
                     Nubish: %s
                     _________________________________________________
                     """;
+    private String lastResponse;
 
     /**
      * Prints the greeting message shown when Nubish starts.
      */
     public void greet() {
-        String logo = """
-              _   _ _   _ ____ ___ ____  _   _
-             | \\ | | | | | __ )_ _/ ___|| | | |
-             |  \\| | | | |  _ \\| |\\___ \\| |_| |
-             | |\\  | |_| | |_) | | ___) |  _  |
-             |_| \\_|\\___/|____/___|____/|_| |_|
-            """;
-        System.out.println(logo + "Hello! I'm Nubish.\nWhat can I do for you?");
+        lastResponse = getGreeting();
+        System.out.println(lastResponse);
+    }
+
+    /**
+     * Returns the greeting message shown when Nubish starts.
+     *
+     * @return greeting message
+     */
+    public String getGreeting() {
+        return """
+                N   N U   U BBBB  III  SSSS H   H
+                NN  N U   U B   B  I  S     H   H
+                N N N U   U BBBB   I   SSS  HHHHH
+                N  NN U   U B   B  I      S H   H
+                N   N  UUU  BBBB  III SSSS  H   H
+                Hello! I'm Nubish.
+                What can I do for you?""";
+    }
+
+    /**
+     * Returns the latest response produced by the UI.
+     *
+     * @return latest response text
+     */
+    public String getLastResponse() {
+        return lastResponse;
     }
 
     /**
      * Prints the farewell message shown when Nubish exits.
      */
     public void bye() {
-        System.out.printf(RESPONSE, "Bye. Hope to see you again soon!");
+        printResponse("Bye. Hope to see you again soon!");
     }
 
     /**
@@ -37,7 +57,7 @@ public class UI {
      * @param list formatted list of tasks
      */
     public void printList(String list) {
-        System.out.printf(RESPONSE, list);
+        printResponse(list);
     }
 
     /**
@@ -51,7 +71,7 @@ public class UI {
                                 %s
                             """, task);
 
-        System.out.printf(RESPONSE, replyMark);
+        printResponse(replyMark);
     }
 
     /**
@@ -65,7 +85,7 @@ public class UI {
                                 %s
                             """, task);
 
-        System.out.printf(RESPONSE, replyUnmark);
+        printResponse(replyUnmark);
     }
 
     /**
@@ -79,7 +99,7 @@ public class UI {
                                 todo task added: %s
                             Now you have %d tasks in the list.
                             """, input, size);
-        System.out.printf(RESPONSE, replyTodo);
+        printResponse(replyTodo);
     }
 
     /**
@@ -94,7 +114,7 @@ public class UI {
                                 Added task: %s (by: %s)
                             Now you have %d tasks in the list
                             """, taskName, deadline, size);
-        System.out.printf(RESPONSE, replyDeadline);
+        printResponse(replyDeadline);
     }
 
     /**
@@ -110,7 +130,7 @@ public class UI {
                                 Added event: %s (From: %s, To: %s)
                             Now you have %d tasks in the list
                             """, eventName, fromTime, toTime, size);
-        System.out.printf(RESPONSE, replyEvent);
+        printResponse(replyEvent);
     }
 
     /**
@@ -126,7 +146,7 @@ public class UI {
                             Now you have %d tasks in the list
                             """, task, size);
 
-        System.out.printf(RESPONSE, replyDelete);
+        printResponse(replyDelete);
     }
 
     /**
@@ -144,7 +164,7 @@ public class UI {
                         - delete
                         - find
                         """;
-        System.out.printf(RESPONSE, cmd);
+        printResponse(cmd);
     }
 
     /**
@@ -157,6 +177,20 @@ public class UI {
                     Here are the matching tasks in your list:
                     %s
                 """, foundList);
-        System.out.printf(RESPONSE, found);
+        printResponse(found);
+    }
+
+    /**
+     * Prints an error message from Nubish command handling.
+     *
+     * @param message error message to show
+     */
+    public void showError(String message) {
+        printResponse(message);
+    }
+
+    private void printResponse(String response) {
+        lastResponse = response;
+        System.out.printf(RESPONSE, response);
     }
 }

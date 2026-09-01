@@ -56,7 +56,7 @@ public class Parser {
                     taskToMark.markAsDone();
                     ui.mark(taskToMark.toString());
                 } catch (NubishException e) {
-                    System.out.println(e.getMessage());
+                    ui.showError(e.getMessage());
                 }
                 break;
             case UNMARK:
@@ -69,7 +69,7 @@ public class Parser {
                     taskToUnmark.unmarkAsDone();
                     ui.unmark(taskToUnmark.toString());
                 } catch (NubishException e) {
-                    System.out.println(e.getMessage());
+                    ui.showError(e.getMessage());
                 }
                 break;
             case TODO:
@@ -80,7 +80,7 @@ public class Parser {
                     taskList.add(new Todo(arguments));
                     ui.todo(input, taskList.size());
                 } catch (NubishException e) {
-                    System.out.println(e.getMessage());
+                    ui.showError(e.getMessage());
                 }
                 break;
             case DEADLINE:
@@ -101,9 +101,9 @@ public class Parser {
                     taskList.add(new Deadline(taskName, deadline));
                     ui.deadline(taskName, deadline, taskList.size());
                 } catch (NubishException e) {
-                    System.out.println(e.getMessage());
+                    ui.showError(e.getMessage());
                 } catch (DateTimeParseException e) {
-                    System.out.println("Hrmmm... Please use the proper format for datetimes: dd/MM/yyyyy hhmm");
+                    ui.showError("Hrmmm... Please use the proper format for datetimes: dd/MM/yyyyy hhmm");
                 }
 
                 break;
@@ -134,9 +134,9 @@ public class Parser {
                     taskList.add(new Event(eventName, fromTime, toTime));
                     ui.event(eventName, fromTime, toTime, taskList.size());
                 } catch (NubishException e) {
-                    System.out.println(e.getMessage());
+                    ui.showError(e.getMessage());
                 } catch (DateTimeParseException e) {
-                    System.out.println("Hrmmm... Please use the proper format for datetimes: dd/MM/yyyyy hhmm");
+                    ui.showError("Hrmmm... Please use the proper format for datetimes: dd/MM/yyyyy hhmm");
                 }
 
                 break;
@@ -151,7 +151,7 @@ public class Parser {
                     Task task = taskList.remove(indexDelete);
                     ui.delete(task.toString(), taskList.size());
                 } catch (NubishException e) {
-                    System.out.printf(e.getMessage());
+                    ui.showError(e.getMessage());
                 }
                 break;
             case FIND:
@@ -163,7 +163,7 @@ public class Parser {
                     TaskList foundList = taskList.find(arguments);
                     ui.find(foundList.toString());
                 } catch (NubishException e) {
-                    System.out.printf(e.getMessage());
+                    ui.showError(e.getMessage());
                 }
                 break;
             default:

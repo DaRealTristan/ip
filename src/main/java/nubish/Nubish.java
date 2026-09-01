@@ -13,6 +13,8 @@ import nubish.utils.UI;
  * Entry point and coordinator for the Nubish task manager application.
  */
 public class Nubish {
+    private static final String DEFAULT_FILEPATH = "./nubish.txt";
+
     private final Storage storage;
     private final TaskList taskList;
     private final UI ui;
@@ -31,16 +33,19 @@ public class Nubish {
     }
 
     /**
+     * Creates a Nubish application using the default save file.
+     */
+    public Nubish() {
+        this(DEFAULT_FILEPATH);
+    }
+
+    /**
      * Starts the command loop, loads saved tasks, and saves tasks before exiting.
      */
     public void run() {
         Scanner scanner = new Scanner(System.in);
 
-        try {
-            storage.load();
-        } catch (FileNotFoundException e) {
-            System.out.println("No saved file to load from");
-        }
+        loadTasks();
 
         ui.greet();
         String input = scanner.nextLine().trim();
@@ -49,11 +54,38 @@ public class Nubish {
             input = scanner.nextLine().trim();
         }
 
-        try {
-            storage.save();
-        } catch (IOException e) {
-            System.out.printf("OOPs seems like there was an error saving your data: %s", e.getMessage());
+        saveTasks();
+    }
+
+    /**
+     * Loads saved tasks and returns the initial greeting.
+     *
+     * @return greeting message
+     */
+    public String start() {
+        loadTasks();
+        return ui.getGreeting();
+    }
+
+    /**
+     * Handles one user command and returns the response produced by Nubish.
+     *
+     * @param input user command
+     * @return response produced after parsing the command
+     */
+    public String getResponse(String input) {
+        boolean shouldContinue = parser.parse(input.trim());
+        if (!shouldContinue) {
+            saveTasks();
         }
+        return ui.getLastResponse();
+    }
+
+    /**
+     * Saves the current task list to disk.
+     */
+    public void save() {
+        saveTasks();
     }
 
     /**
@@ -62,7 +94,22 @@ public class Nubish {
      * @param args command line arguments, currently unused
      */
     public static void main(String[] args) {
-        final String filepath = "./nubish.txt";
-        new Nubish(filepath).run();
+        new Nubish(DEFAULT_FILEPATH).run();
+    }
+
+    private void loadTasks() {
+        try {
+            storage.load();
+        } catch (FileNotFoundException e) {
+            System.out.println("No saved file to load from");
+        }
+    }
+
+    private void saveTasks() {
+        try {
+            storage.save();
+        } catch (IOException e) {
+            System.out.printf("OOPs seems like there was an error saving your data: %s", e.getMessage());
+        }
     }
 }
