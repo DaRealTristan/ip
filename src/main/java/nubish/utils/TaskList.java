@@ -1,6 +1,7 @@
 package nubish.utils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import nubish.tasks.Task;
@@ -16,8 +17,8 @@ public class TaskList {
      *
      * @param task task to add
      */
-    public void add(Task task) {
-        tasks.add(task);
+    public void add(Task... task) {
+        tasks.addAll(Arrays.asList(task));
     }
 
     /**
