@@ -26,6 +26,8 @@ public class Task {
     public Task(boolean isDone, String description) {
         this.description = description;
         this.isDone = isDone;
+
+        assert this.description != null : "task description was null";
     }
 
     /**
