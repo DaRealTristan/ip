@@ -47,10 +47,10 @@ public class Parser {
                 ui.printList(taskList.toString());
                 break;
             case MARK:
-                markTask(arguments);
+                setTaskDoneStatus(arguments, true);
                 break;
             case UNMARK:
-                unmarkTask(arguments);
+                setTaskDoneStatus(arguments, false);
                 break;
             case TODO:
                 addTodo(input, arguments);
@@ -73,29 +73,21 @@ public class Parser {
         return true;
     }
 
-    private void markTask(String arguments) {
+    private void setTaskDoneStatus(String arguments, boolean isDone) {
         try {
             if (arguments.isEmpty()) {
                 throw new NubishException("Hrmmm... Please put a valid task number.");
             }
-            int markIndex = Integer.parseInt(arguments.trim()) - 1;
-            Task taskToMark = taskList.get(markIndex);
-            taskToMark.markAsDone();
-            ui.printMark(taskToMark.toString());
-        } catch (NubishException e) {
-            ui.showError(e.getMessage());
-        }
-    }
+            int taskIndex = Integer.parseInt(arguments.trim()) - 1;
+            Task task = taskList.get(taskIndex);
 
-    private void unmarkTask(String arguments) {
-        try {
-            if (arguments.isEmpty()) {
-                throw new NubishException("Hrmmm... Please put a valid task number.");
+            if (isDone) {
+                task.markAsDone();
+                ui.printMark(task.toString());
+            } else {
+                task.unmarkAsDone();
+                ui.printUnmark(task.toString());
             }
-            int unmarkIndex = Integer.parseInt(arguments.trim()) - 1;
-            Task taskToUnmark = taskList.get(unmarkIndex);
-            taskToUnmark.unmarkAsDone();
-            ui.printUnmark(taskToUnmark.toString());
         } catch (NubishException e) {
             ui.showError(e.getMessage());
         }
