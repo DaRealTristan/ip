@@ -14,9 +14,9 @@ public class Event extends Task {
     private LocalDateTime to;
 
     /**
-     * Creates an incomplete event task with the given description and time range.
+     * Creates an incomplete printEvent task with the given description and time range.
      *
-     * @param description description of the event task
+     * @param description description of the printEvent task
      * @param from start date and time in {@code dd/MM/yyyy HHmm} format
      * @param to end date and time in {@code dd/MM/yyyy HHmm} format
      */
@@ -27,10 +27,10 @@ public class Event extends Task {
     }
 
     /**
-     * Creates an event task with the given completion status, description, and time range.
+     * Creates an printEvent task with the given completion status, description, and time range.
      *
-     * @param isDone whether the event task has been completed
-     * @param description description of the event task
+     * @param isDone whether the printEvent task has been completed
+     * @param description description of the printEvent task
      * @param from start date and time in {@code dd/MM/yyyy HHmm} format
      * @param to end date and time in {@code dd/MM/yyyy HHmm} format
      */
@@ -41,7 +41,7 @@ public class Event extends Task {
     }
 
     /**
-     * Converts a saved event date-time string into a {@link LocalDateTime}.
+     * Converts a saved printEvent date-time string into a {@link LocalDateTime}.
      *
      * @param dateTimeString date and time in {@code dd/MM/yyyy HHmm} format
      * @return parsed date and time
@@ -51,9 +51,9 @@ public class Event extends Task {
     }
 
     /**
-     * Returns the user-facing representation of this event task.
+     * Returns the user-facing representation of this printEvent task.
      *
-     * @return formatted event string with type, status, description, and time range
+     * @return formatted printEvent string with type, status, description, and time range
      */
     @Override
     public String toString() {
@@ -61,9 +61,9 @@ public class Event extends Task {
                 this.to.format(PRINT_FORMAT));
     }
     /**
-     * Returns the storage representation of this event task.
+     * Returns the storage representation of this printEvent task.
      *
-     * @return formatted event string suitable for saving to disk
+     * @return formatted printEvent string suitable for saving to disk
      */
     @Override
     public String saveString() {

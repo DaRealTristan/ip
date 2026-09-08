@@ -41,7 +41,7 @@ public class Parser {
 
         switch (command) {
             case BYE:
-                ui.bye();
+                ui.printBye();
                 return false;
             case LIST:
                 ui.printList(taskList.toString());
@@ -51,10 +51,10 @@ public class Parser {
                     if (arguments.isEmpty()) {
                         throw new NubishException("Hrmmm... Please put a valid task number.");
                     }
-                    int indexMark = Integer.parseInt(arguments.trim()) - 1;
-                    Task taskToMark = taskList.get(indexMark);
+                    int markIndex = Integer.parseInt(arguments.trim()) - 1;
+                    Task taskToMark = taskList.get(markIndex);
                     taskToMark.markAsDone();
-                    ui.mark(taskToMark.toString());
+                    ui.printMark(taskToMark.toString());
                 } catch (NubishException e) {
                     ui.showError(e.getMessage());
                 }
@@ -64,10 +64,10 @@ public class Parser {
                     if (arguments.isEmpty()) {
                         throw new NubishException("Hrmmm... Please put a valid task number.");
                     }
-                    int indexUnmark = Integer.parseInt(arguments.trim()) - 1;
-                    Task taskToUnmark = taskList.get(indexUnmark);
+                    int unmarkIndex = Integer.parseInt(arguments.trim()) - 1;
+                    Task taskToUnmark = taskList.get(unmarkIndex);
                     taskToUnmark.unmarkAsDone();
-                    ui.unmark(taskToUnmark.toString());
+                    ui.printUnmark(taskToUnmark.toString());
                 } catch (NubishException e) {
                     ui.showError(e.getMessage());
                 }
@@ -78,7 +78,7 @@ public class Parser {
                         throw new NubishException("Hrmmm... The description of a todo cannot be empty.");
                     }
                     taskList.add(new Todo(arguments));
-                    ui.todo(input, taskList.size());
+                    ui.printTodoAdded(input, taskList.size());
                 } catch (NubishException e) {
                     ui.showError(e.getMessage());
                 }
@@ -88,18 +88,18 @@ public class Parser {
                     int byIndex = arguments.indexOf(ArgumentToken.BY.getToken());
                     if (byIndex == -1) {
                         throw new NubishException("Hrmmm... Please use the proper format for deadlines: "
-                                + "deadline {taskname} /by {deadline}");
+                                + "printDeadline {taskname} /by {printDeadline}");
                     }
                     String taskName = arguments.substring(0, byIndex).trim();
                     String deadline = arguments.substring(byIndex + ArgumentToken.BY.getToken().length()).trim();
                     if (taskName.isEmpty()) {
-                        throw new NubishException("Hrmmm... The description of a deadline cannot be empty.");
+                        throw new NubishException("Hrmmm... The description of a printDeadline cannot be empty.");
                     }
                     if (deadline.isEmpty()) {
-                        throw new NubishException("Hrmmm... The deadline of the task cannot be empty.");
+                        throw new NubishException("Hrmmm... The printDeadline of the task cannot be empty.");
                     }
                     taskList.add(new Deadline(taskName, deadline));
-                    ui.deadline(taskName, deadline, taskList.size());
+                    ui.printDeadlineAdded(taskName, deadline, taskList.size());
                 } catch (NubishException e) {
                     ui.showError(e.getMessage());
                 } catch (DateTimeParseException e) {
@@ -114,7 +114,7 @@ public class Parser {
 
                     if (fromIndex == -1 || toIndex == -1) {
                         throw new NubishException("Hrmmm... Please use the proper format for events: "
-                                + "event {eventName} /from {startDate} /to {enddate}");
+                                + "printEvent {eventName} /from {startDate} /to {enddate}");
                     }
 
                     String eventName = arguments.substring(0, fromIndex).trim();
@@ -123,16 +123,16 @@ public class Parser {
                     String toTime = arguments.substring(toIndex + ArgumentToken.TO.getToken().length()).trim();
 
                     if (eventName.isEmpty()) {
-                        throw new NubishException("Hrmmm... The name of an event cannot be empty.");
+                        throw new NubishException("Hrmmm... The name of an printEvent cannot be empty.");
                     }
                     if (fromTime.isEmpty()) {
-                        throw new NubishException("Hrmmm... The start of an event cannot be empty.");
+                        throw new NubishException("Hrmmm... The start of an printEvent cannot be empty.");
                     }
                     if (toTime.isEmpty()) {
-                        throw new NubishException("Hrmmm... The end of an event cannot be empty.");
+                        throw new NubishException("Hrmmm... The end of an printEvent cannot be empty.");
                     }
                     taskList.add(new Event(eventName, fromTime, toTime));
-                    ui.event(eventName, fromTime, toTime, taskList.size());
+                    ui.printEventAdded(eventName, fromTime, toTime, taskList.size());
                 } catch (NubishException e) {
                     ui.showError(e.getMessage());
                 } catch (DateTimeParseException e) {
@@ -146,10 +146,10 @@ public class Parser {
                         throw new NubishException("Hrmmm... The description of a todo cannot be empty.");
                     }
 
-                    int indexDelete = Integer.parseInt(arguments.trim()) - 1;
+                    int deleteIndex = Integer.parseInt(arguments.trim()) - 1;
 
-                    Task task = taskList.remove(indexDelete);
-                    ui.delete(task.toString(), taskList.size());
+                    Task task = taskList.remove(deleteIndex);
+                    ui.printTaskDelete(task.toString(), taskList.size());
                 } catch (NubishException e) {
                     ui.showError(e.getMessage());
                 }
@@ -167,7 +167,7 @@ public class Parser {
                 }
                 break;
             default:
-                ui.commandList();
+                ui.printCommandList();
         }
         return true;
     }

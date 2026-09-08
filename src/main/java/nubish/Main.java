@@ -77,7 +77,7 @@ public class Main extends Application {
         String response = nubish.getResponse(command);
         addNubishMessage(response);
 
-        if (command.equalsIgnoreCase("bye")) {
+        if (command.equalsIgnoreCase("printBye")) {
             input.setDisable(true);
             sendButton.setDisable(true);
         }

@@ -8,11 +8,11 @@ import java.time.format.DateTimeParseException;
 import org.junit.jupiter.api.Test;
 
 /**
- * Tests deadline task status, saving, and date parsing behavior.
+ * Tests printDeadline task status, saving, and date parsing behavior.
  */
 public class DeadlineTest {
     /**
-     * Verifies that a new deadline task starts as not done.
+     * Verifies that a new printDeadline task starts as not done.
      */
     @Test
     public void getStatusIcon_newDeadline_returnsUndoneIcon() {
@@ -22,7 +22,7 @@ public class DeadlineTest {
     }
 
     /**
-     * Verifies that a loaded done deadline task shows the done icon.
+     * Verifies that a loaded done printDeadline task shows the done icon.
      */
     @Test
     public void getStatusIcon_savedDoneDeadline_returnsDoneIcon() {
@@ -32,7 +32,7 @@ public class DeadlineTest {
     }
 
     /**
-     * Verifies that a loaded undone deadline task shows the undone icon.
+     * Verifies that a loaded undone printDeadline task shows the undone icon.
      */
     @Test
     public void getStatusIcon_savedUndoneDeadline_returnsUndoneIcon() {
@@ -42,7 +42,7 @@ public class DeadlineTest {
     }
 
     /**
-     * Verifies that marking a deadline task changes its status icon to done.
+     * Verifies that marking a printDeadline task changes its status icon to done.
      */
     @Test
     public void getStatusIcon_markedDeadline_returnsDoneIcon() {
@@ -54,7 +54,7 @@ public class DeadlineTest {
     }
 
     /**
-     * Verifies that unmarking a deadline task changes its status icon to undone.
+     * Verifies that unmarking a printDeadline task changes its status icon to undone.
      */
     @Test
     public void getStatusIcon_unmarkedTask_returnsUndoneIcon() {
@@ -66,7 +66,7 @@ public class DeadlineTest {
     }
 
     /**
-     * Verifies that an undone deadline task is saved in the expected file format.
+     * Verifies that an undone printDeadline task is saved in the expected file format.
      */
     @Test
     public void saveString_unmarkedDeadline_returnsCorrectFormat() {

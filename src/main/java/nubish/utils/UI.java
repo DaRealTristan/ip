@@ -47,7 +47,7 @@ public class UI {
     /**
      * Prints the farewell message shown when Nubish exits.
      */
-    public void bye() {
+    public void printBye() {
         printResponse("Bye. Hope to see you again soon!");
     }
 
@@ -65,7 +65,7 @@ public class UI {
      *
      * @param task formatted task that was marked
      */
-    public void mark(String task) {
+    public void printMark(String task) {
         String replyMark = String.format("""
                             Nice! I've marked this task as done:
                                 %s
@@ -79,7 +79,7 @@ public class UI {
      *
      * @param task formatted task that was unmarked
      */
-    public void unmark(String task) {
+    public void printUnmark(String task) {
         String replyUnmark = String.format("""
                             I've unmarked this task:
                                 %s
@@ -94,7 +94,7 @@ public class UI {
      * @param input original todo command entered by the user
      * @param size number of tasks after adding the todo
      */
-    public void todo(String input, int size) {
+    public void printTodoAdded(String input, int size) {
         String replyTodo = String.format("""
                                 todo task added: %s
                             Now you have %d tasks in the list.
@@ -103,13 +103,13 @@ public class UI {
     }
 
     /**
-     * Prints a message confirming that a deadline task was added.
+     * Prints a message confirming that a printDeadline task was added.
      *
-     * @param taskName description of the deadline task
-     * @param deadline deadline entered by the user
-     * @param size number of tasks after adding the deadline
+     * @param taskName description of the printDeadline task
+     * @param deadline printDeadline entered by the user
+     * @param size number of tasks after adding the printDeadline
      */
-    public void deadline(String taskName, String deadline, int size) {
+    public void printDeadlineAdded(String taskName, String deadline, int size) {
         String replyDeadline = String.format("""
                                 Added task: %s (by: %s)
                             Now you have %d tasks in the list
@@ -118,14 +118,14 @@ public class UI {
     }
 
     /**
-     * Prints a message confirming that an event task was added.
+     * Prints a message confirming that an printEvent task was added.
      *
-     * @param eventName description of the event task
+     * @param eventName description of the printEvent task
      * @param fromTime start date and time entered by the user
      * @param toTime end date and time entered by the user
-     * @param size number of tasks after adding the event
+     * @param size number of tasks after adding the printEvent
      */
-    public void event(String eventName, String fromTime, String toTime, int size) {
+    public void printEventAdded(String eventName, String fromTime, String toTime, int size) {
         String replyEvent = String.format("""
                                 Added event: %s (From: %s, To: %s)
                             Now you have %d tasks in the list
@@ -139,7 +139,7 @@ public class UI {
      * @param task formatted task that was deleted
      * @param size number of tasks after deletion
      */
-    public void delete(String task, int size) {
+    public void printTaskDelete(String task, int size) {
         String replyDelete = String.format("""
                             Ok. I have removed this task:
                                 %s
@@ -152,7 +152,7 @@ public class UI {
     /**
      * Prints the list of commands currently supported by Nubish.
      */
-    public void commandList() {
+    public void printCommandList() {
         String cmd = """
                         OOPS!!! I'm sorry, but I don't know what that means :-(
                         Here is a list of the current commands:

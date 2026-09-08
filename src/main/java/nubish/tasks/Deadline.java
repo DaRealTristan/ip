@@ -13,10 +13,10 @@ public class Deadline extends Task {
     private LocalDateTime deadline;
 
     /**
-     * Creates an incomplete deadline task with the given description and deadline.
+     * Creates an incomplete printDeadline task with the given description and printDeadline.
      *
-     * @param description description of the deadline task
-     * @param deadline deadline in {@code dd/MM/yyyy HHmm} format
+     * @param description description of the printDeadline task
+     * @param deadline printDeadline in {@code dd/MM/yyyy HHmm} format
      */
     public Deadline(String description, String deadline) {
         super(description);
@@ -24,11 +24,11 @@ public class Deadline extends Task {
     }
 
     /**
-     * Creates a deadline task with the given completion status, description, and deadline.
+     * Creates a printDeadline task with the given completion status, description, and printDeadline.
      *
-     * @param isDone whether the deadline task has been completed
-     * @param description description of the deadline task
-     * @param deadline deadline in {@code dd/MM/yyyy HHmm} format
+     * @param isDone whether the printDeadline task has been completed
+     * @param description description of the printDeadline task
+     * @param deadline printDeadline in {@code dd/MM/yyyy HHmm} format
      */
     public Deadline(boolean isDone, String description, String deadline) {
         super(isDone, description);
@@ -36,7 +36,7 @@ public class Deadline extends Task {
     }
 
     /**
-     * Converts a saved deadline string into a {@link LocalDateTime}.
+     * Converts a saved printDeadline string into a {@link LocalDateTime}.
      *
      * @param dateTimeString date and time in {@code dd/MM/yyyy HHmm} format
      * @return parsed date and time
@@ -46,9 +46,9 @@ public class Deadline extends Task {
     }
 
     /**
-     * Returns the user-facing representation of this deadline task.
+     * Returns the user-facing representation of this printDeadline task.
      *
-     * @return formatted deadline string with type, status, description, and deadline
+     * @return formatted printDeadline string with type, status, description, and printDeadline
      */
     @Override
     public String toString() {
@@ -56,9 +56,9 @@ public class Deadline extends Task {
     }
 
     /**
-     * Returns the storage representation of this deadline task.
+     * Returns the storage representation of this printDeadline task.
      *
-     * @return formatted deadline string suitable for saving to disk
+     * @return formatted printDeadline string suitable for saving to disk
      */
     @Override
     public String saveString() {

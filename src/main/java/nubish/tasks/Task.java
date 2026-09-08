@@ -61,9 +61,9 @@ public class Task {
     }
 
     /**
-     * Returns the user-facing representation of this task.
+     * Returns the storage representation of this task.
      *
-     * @return formatted task string with its status icon and description
+     * @return formatted task string with its completion status and description
      */
     public String saveString() {
         return String.format("%d | %s", isDone ? 1 : 0, this.description);
