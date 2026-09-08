@@ -117,6 +117,8 @@ public class Parser {
                                 + "printEvent {eventName} /from {startDate} /to {enddate}");
                     }
 
+                    assert toIndex > fromIndex : "/from appeared after /to for Event creation";
+
                     String eventName = arguments.substring(0, fromIndex).trim();
                     String fromTime = arguments.substring(
                             fromIndex + ArgumentToken.FROM.getToken().length(), toIndex).trim();
