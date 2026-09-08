@@ -3,6 +3,7 @@ package nubish.utils;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Stream;
 
 import nubish.tasks.Task;
 
@@ -58,12 +59,9 @@ public class TaskList {
      */
     public TaskList find(String keyword) {
         TaskList tasklist = new TaskList();
+        Stream<Task> taskStream = this.tasks.stream().filter(task -> task.getDescription().contains(keyword));
 
-        for (Task t: this.tasks) {
-            if (t.getDescription().contains(keyword)) {
-                tasklist.add(t);
-            }
-        }
+        tasklist.add(taskStream.toList().toArray(new Task[0]));
 
         return tasklist;
     }
