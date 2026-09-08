@@ -24,6 +24,8 @@ public class Event extends Task {
         super(description);
         this.from = convertToDateTime(from);
         this.to = convertToDateTime(to);
+
+        assert this.to.isBefore(this.from) : "From date was set to be after to date";
     }
 
     /**
