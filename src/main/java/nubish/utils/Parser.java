@@ -47,147 +47,131 @@ public class Parser {
                 ui.printList(taskList.toString());
                 break;
             case MARK:
-                setTaskDoneStatus(arguments, true);
+                try {
+                    if (arguments.isEmpty()) {
+                        throw new NubishException("Hrmmm... Please put a valid task number.");
+                    }
+                    int markIndex = Integer.parseInt(arguments.trim()) - 1;
+                    Task taskToMark = taskList.get(markIndex);
+                    taskToMark.markAsDone();
+                    ui.printMark(taskToMark.toString());
+                } catch (NubishException e) {
+                    ui.showError(e.getMessage());
+                }
                 break;
             case UNMARK:
-                setTaskDoneStatus(arguments, false);
+                try {
+                    if (arguments.isEmpty()) {
+                        throw new NubishException("Hrmmm... Please put a valid task number.");
+                    }
+                    int unmarkIndex = Integer.parseInt(arguments.trim()) - 1;
+                    Task taskToUnmark = taskList.get(unmarkIndex);
+                    taskToUnmark.unmarkAsDone();
+                    ui.printUnmark(taskToUnmark.toString());
+                } catch (NubishException e) {
+                    ui.showError(e.getMessage());
+                }
                 break;
             case TODO:
-                addTodo(input, arguments);
+                try {
+                    if (arguments.isEmpty()) {
+                        throw new NubishException("Hrmmm... The description of a todo cannot be empty.");
+                    }
+                    taskList.add(new Todo(arguments));
+                    ui.printTodoAdded(input, taskList.size());
+                } catch (NubishException e) {
+                    ui.showError(e.getMessage());
+                }
                 break;
             case DEADLINE:
-                addDeadline(arguments);
+                try {
+                    int byIndex = arguments.indexOf(ArgumentToken.BY.getToken());
+                    if (byIndex == -1) {
+                        throw new NubishException("Hrmmm... Please use the proper format for deadlines: "
+                                + "printDeadline {taskname} /by {printDeadline}");
+                    }
+                    String taskName = arguments.substring(0, byIndex).trim();
+                    String deadline = arguments.substring(byIndex + ArgumentToken.BY.getToken().length()).trim();
+                    if (taskName.isEmpty()) {
+                        throw new NubishException("Hrmmm... The description of a printDeadline cannot be empty.");
+                    }
+                    if (deadline.isEmpty()) {
+                        throw new NubishException("Hrmmm... The printDeadline of the task cannot be empty.");
+                    }
+                    taskList.add(new Deadline(taskName, deadline));
+                    ui.printDeadlineAdded(taskName, deadline, taskList.size());
+                } catch (NubishException e) {
+                    ui.showError(e.getMessage());
+                } catch (DateTimeParseException e) {
+                    ui.showError("Hrmmm... Please use the proper format for datetimes: dd/MM/yyyyy hhmm");
+                }
+
                 break;
             case EVENT:
-                addEvent(arguments);
+                try {
+                    int fromIndex = arguments.indexOf(ArgumentToken.FROM.getToken());
+                    int toIndex = arguments.indexOf(ArgumentToken.TO.getToken());
+
+                    if (fromIndex == -1 || toIndex == -1) {
+                        throw new NubishException("Hrmmm... Please use the proper format for events: "
+                                + "printEvent {eventName} /from {startDate} /to {enddate}");
+                    }
+
+                    assert toIndex > fromIndex : "/from appeared after /to for Event creation";
+
+                    String eventName = arguments.substring(0, fromIndex).trim();
+                    String fromTime = arguments.substring(
+                            fromIndex + ArgumentToken.FROM.getToken().length(), toIndex).trim();
+                    String toTime = arguments.substring(toIndex + ArgumentToken.TO.getToken().length()).trim();
+
+                    if (eventName.isEmpty()) {
+                        throw new NubishException("Hrmmm... The name of an printEvent cannot be empty.");
+                    }
+                    if (fromTime.isEmpty()) {
+                        throw new NubishException("Hrmmm... The start of an printEvent cannot be empty.");
+                    }
+                    if (toTime.isEmpty()) {
+                        throw new NubishException("Hrmmm... The end of an printEvent cannot be empty.");
+                    }
+                    taskList.add(new Event(eventName, fromTime, toTime));
+                    ui.printEventAdded(eventName, fromTime, toTime, taskList.size());
+                } catch (NubishException e) {
+                    ui.showError(e.getMessage());
+                } catch (DateTimeParseException e) {
+                    ui.showError("Hrmmm... Please use the proper format for datetimes: dd/MM/yyyyy hhmm");
+                }
+
                 break;
             case DELETE:
-                deleteTask(arguments);
+                try {
+                    if (arguments.isEmpty()) {
+                        throw new NubishException("Hrmmm... The description of a todo cannot be empty.");
+                    }
+
+                    int deleteIndex = Integer.parseInt(arguments.trim()) - 1;
+
+                    Task task = taskList.remove(deleteIndex);
+                    ui.printTaskDelete(task.toString(), taskList.size());
+                } catch (NubishException e) {
+                    ui.showError(e.getMessage());
+                }
                 break;
             case FIND:
-                findTasks(arguments);
+                try {
+                    if (arguments.isEmpty()) {
+                        throw new NubishException("Hrmmm... Please enter keywords to search for");
+                    }
+
+                    TaskList foundList = taskList.find(arguments);
+                    ui.find(foundList.toString());
+                } catch (NubishException e) {
+                    ui.showError(e.getMessage());
+                }
                 break;
             default:
                 ui.printCommandList();
         }
         return true;
-    }
-
-    private void setTaskDoneStatus(String arguments, boolean isDone) {
-        try {
-            if (arguments.isEmpty()) {
-                throw new NubishException("Hrmmm... Please put a valid task number.");
-            }
-            int taskIndex = Integer.parseInt(arguments.trim()) - 1;
-            Task task = taskList.get(taskIndex);
-
-            if (isDone) {
-                task.markAsDone();
-                ui.printMark(task.toString());
-            } else {
-                task.unmarkAsDone();
-                ui.printUnmark(task.toString());
-            }
-        } catch (NubishException e) {
-            ui.showError(e.getMessage());
-        }
-    }
-
-    private void addTodo(String input, String arguments) {
-        try {
-            if (arguments.isEmpty()) {
-                throw new NubishException("Hrmmm... The description of a todo cannot be empty.");
-            }
-            taskList.add(new Todo(arguments));
-            ui.printTodoAdded(input, taskList.size());
-        } catch (NubishException e) {
-            ui.showError(e.getMessage());
-        }
-    }
-
-    private void addDeadline(String arguments) {
-        try {
-            int byIndex = arguments.indexOf(ArgumentToken.BY.getToken());
-            if (byIndex == -1) {
-                throw new NubishException("Hrmmm... Please use the proper format for deadlines: "
-                        + "printDeadline {taskname} /by {printDeadline}");
-            }
-            String taskName = arguments.substring(0, byIndex).trim();
-            String deadline = arguments.substring(byIndex + ArgumentToken.BY.getToken().length()).trim();
-            if (taskName.isEmpty()) {
-                throw new NubishException("Hrmmm... The description of a printDeadline cannot be empty.");
-            }
-            if (deadline.isEmpty()) {
-                throw new NubishException("Hrmmm... The printDeadline of the task cannot be empty.");
-            }
-            taskList.add(new Deadline(taskName, deadline));
-            ui.printDeadlineAdded(taskName, deadline, taskList.size());
-        } catch (NubishException e) {
-            ui.showError(e.getMessage());
-        } catch (DateTimeParseException e) {
-            ui.showError("Hrmmm... Please use the proper format for datetimes: dd/MM/yyyyy hhmm");
-        }
-    }
-
-    private void addEvent(String arguments) {
-        try {
-            int fromIndex = arguments.indexOf(ArgumentToken.FROM.getToken());
-            int toIndex = arguments.indexOf(ArgumentToken.TO.getToken());
-
-            if (fromIndex == -1 || toIndex == -1) {
-                throw new NubishException("Hrmmm... Please use the proper format for events: "
-                        + "printEvent {eventName} /from {startDate} /to {enddate}");
-            }
-
-            String eventName = arguments.substring(0, fromIndex).trim();
-            String fromTime = arguments.substring(
-                    fromIndex + ArgumentToken.FROM.getToken().length(), toIndex).trim();
-            String toTime = arguments.substring(toIndex + ArgumentToken.TO.getToken().length()).trim();
-
-            if (eventName.isEmpty()) {
-                throw new NubishException("Hrmmm... The name of an printEvent cannot be empty.");
-            }
-            if (fromTime.isEmpty()) {
-                throw new NubishException("Hrmmm... The start of an printEvent cannot be empty.");
-            }
-            if (toTime.isEmpty()) {
-                throw new NubishException("Hrmmm... The end of an printEvent cannot be empty.");
-            }
-            taskList.add(new Event(eventName, fromTime, toTime));
-            ui.printEventAdded(eventName, fromTime, toTime, taskList.size());
-        } catch (NubishException e) {
-            ui.showError(e.getMessage());
-        } catch (DateTimeParseException e) {
-            ui.showError("Hrmmm... Please use the proper format for datetimes: dd/MM/yyyyy hhmm");
-        }
-    }
-
-    private void deleteTask(String arguments) {
-        try {
-            if (arguments.isEmpty()) {
-                throw new NubishException("Hrmmm... The description of a todo cannot be empty.");
-            }
-
-            int deleteIndex = Integer.parseInt(arguments.trim()) - 1;
-
-            Task task = taskList.remove(deleteIndex);
-            ui.printTaskDelete(task.toString(), taskList.size());
-        } catch (NubishException e) {
-            ui.showError(e.getMessage());
-        }
-    }
-
-    private void findTasks(String arguments) {
-        try {
-            if (arguments.isEmpty()) {
-                throw new NubishException("Hrmmm... Please enter keywords to search for");
-            }
-
-            TaskList foundList = taskList.find(arguments);
-            ui.find(foundList.toString());
-        } catch (NubishException e) {
-            ui.showError(e.getMessage());
-        }
     }
 
 }
