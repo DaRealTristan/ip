@@ -84,6 +84,10 @@ public class TaskList {
 
     @Override
     public String toString() {
+        if (this.tasks.isEmpty()) {
+            return "";
+        }
+
         StringBuilder list = new StringBuilder();
         for (int i = 0; i < this.tasks.size(); i++) {
             Task t = this.get(i);

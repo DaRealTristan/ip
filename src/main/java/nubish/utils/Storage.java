@@ -36,22 +36,27 @@ public class Storage {
      */
     public void load() throws FileNotFoundException {
         File f = new File(this.filepath);
-        Scanner s = new Scanner(f);
+        try (Scanner scanner = new Scanner(f)) {
+            while (scanner.hasNextLine()) {
+                String savedTask = scanner.nextLine();
+                if (savedTask.isBlank()) {
+                    continue;
+                }
 
-        while (s.hasNext()) {
-            String[] line = s.nextLine().split("\\s*\\|\\s*");
-            switch (line[0]) {
-                case "E":
-                    this.taskList.add(new Event(Integer.parseInt(line[1]) == 1, line[2], line[3], line[4]));
-                    break;
-                case "T":
-                    this.taskList.add(new Todo(Integer.parseInt(line[1]) == 1, line[2]));
-                    break;
-                case "D":
-                    this.taskList.add(new Deadline(Integer.parseInt(line[1]) == 1, line[2], line[3]));
-                    break;
-                default:
-                    break;
+                String[] line = savedTask.split("\\s*\\|\\s*");
+                switch (line[0]) {
+                    case "E":
+                        this.taskList.add(new Event(Integer.parseInt(line[1]) == 1, line[2], line[3], line[4]));
+                        break;
+                    case "T":
+                        this.taskList.add(new Todo(Integer.parseInt(line[1]) == 1, line[2]));
+                        break;
+                    case "D":
+                        this.taskList.add(new Deadline(Integer.parseInt(line[1]) == 1, line[2], line[3]));
+                        break;
+                    default:
+                        break;
+                }
             }
         }
     }

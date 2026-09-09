@@ -61,6 +61,29 @@ public class UI {
     }
 
     /**
+     * Returns the formatted reminders for tasks due today.
+     *
+     * @param reminders formatted list of tasks due today
+     * @return formatted reminders for tasks due today
+     */
+    public String getReminders(String reminders) {
+        if (!reminders.isEmpty()) {
+            return "These tasks are due today:\n" + reminders;
+        }
+
+        return "";
+    }
+
+    /**
+     * Prints the formatted reminders for tasks due today.
+     *
+     * @param reminders formatted list of tasks due today
+     */
+    public void printReminders(String reminders) {
+        printResponse("These tasks are due today:\n" + reminders);
+    }
+
+    /**
      * Prints a message confirming that a task was marked as done.
      *
      * @param task formatted task that was marked
@@ -103,11 +126,11 @@ public class UI {
     }
 
     /**
-     * Prints a message confirming that a printDeadline task was added.
+     * Prints a message confirming that a Deadline task was added.
      *
-     * @param taskName description of the printDeadline task
-     * @param deadline printDeadline entered by the user
-     * @param size number of tasks after adding the printDeadline
+     * @param taskName description of the Deadline task
+     * @param deadline Deadline entered by the user
+     * @param size number of tasks after adding the Deadline
      */
     public void printDeadlineAdded(String taskName, String deadline, int size) {
         String replyDeadline = String.format("""
@@ -118,12 +141,12 @@ public class UI {
     }
 
     /**
-     * Prints a message confirming that an printEvent task was added.
+     * Prints a message confirming that an Event task was added.
      *
-     * @param eventName description of the printEvent task
+     * @param eventName description of the Event task
      * @param fromTime start date and time entered by the user
      * @param toTime end date and time entered by the user
-     * @param size number of tasks after adding the printEvent
+     * @param size number of tasks after adding the Event
      */
     public void printEventAdded(String eventName, String fromTime, String toTime, int size) {
         String replyEvent = String.format("""

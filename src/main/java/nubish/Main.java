@@ -56,6 +56,8 @@ public class Main extends Application {
         stage.show();
 
         addNubishMessage(nubish.start());
+        addNubishMessage(nubish.getTaskList());
+        addNubishMessage(nubish.remind());
         chatBox.heightProperty().addListener((observable) -> scrollToLatestMessage());
     }
 
@@ -89,8 +91,10 @@ public class Main extends Application {
     }
 
     private void addNubishMessage(String message) {
-        chatBox.getChildren().add(createMessageRow(message, false));
-        scrollToLatestMessage();
+        if (!message.isEmpty()) {
+            chatBox.getChildren().add(createMessageRow(message, false));
+            scrollToLatestMessage();
+        }
     }
 
     private HBox createMessageRow(String message, boolean isUser) {
@@ -101,6 +105,7 @@ public class Main extends Application {
         bubble.setText(message);
         bubble.setTextOverrun(OverrunStyle.CLIP);
         bubble.setMinHeight(Region.USE_PREF_SIZE);
+        bubble.setPrefHeight(Region.USE_COMPUTED_SIZE);
         bubble.setMaxHeight(Double.MAX_VALUE);
         bubble.maxWidthProperty().bind(chatScrollPane.widthProperty().multiply(MESSAGE_WIDTH_RATIO));
         bubble.getStyleClass().add(isUser ? "user-bubble" : "nubish-bubble");
