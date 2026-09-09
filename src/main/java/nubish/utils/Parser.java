@@ -110,15 +110,15 @@ public class Parser {
             int byIndex = arguments.indexOf(ArgumentToken.BY.getToken());
             if (byIndex == -1) {
                 throw new NubishException("Hrmmm... Please use the proper format for deadlines: "
-                        + "printDeadline {taskname} /by {printDeadline}");
+                        + "deadline {taskname} /by {deadline}");
             }
             String taskName = arguments.substring(0, byIndex).trim();
             String deadline = arguments.substring(byIndex + ArgumentToken.BY.getToken().length()).trim();
             if (taskName.isEmpty()) {
-                throw new NubishException("Hrmmm... The description of a printDeadline cannot be empty.");
+                throw new NubishException("Hrmmm... The description of a deadline cannot be empty.");
             }
             if (deadline.isEmpty()) {
-                throw new NubishException("Hrmmm... The printDeadline of the task cannot be empty.");
+                throw new NubishException("Hrmmm... The deadline of the task cannot be empty.");
             }
             taskList.add(new Deadline(taskName, deadline));
             ui.printDeadlineAdded(taskName, deadline, taskList.size());
@@ -136,7 +136,7 @@ public class Parser {
 
             if (fromIndex == -1 || toIndex == -1) {
                 throw new NubishException("Hrmmm... Please use the proper format for events: "
-                        + "printEvent {eventName} /from {startDate} /to {enddate}");
+                        + "event {eventName} /from {startDate} /to {enddate}");
             }
 
             String eventName = arguments.substring(0, fromIndex).trim();
@@ -145,13 +145,13 @@ public class Parser {
             String toTime = arguments.substring(toIndex + ArgumentToken.TO.getToken().length()).trim();
 
             if (eventName.isEmpty()) {
-                throw new NubishException("Hrmmm... The name of an printEvent cannot be empty.");
+                throw new NubishException("Hrmmm... The name of an event cannot be empty.");
             }
             if (fromTime.isEmpty()) {
-                throw new NubishException("Hrmmm... The start of an printEvent cannot be empty.");
+                throw new NubishException("Hrmmm... The start of an event cannot be empty.");
             }
             if (toTime.isEmpty()) {
-                throw new NubishException("Hrmmm... The end of an printEvent cannot be empty.");
+                throw new NubishException("Hrmmm... The end of an event cannot be empty.");
             }
             taskList.add(new Event(eventName, fromTime, toTime));
             ui.printEventAdded(eventName, fromTime, toTime, taskList.size());

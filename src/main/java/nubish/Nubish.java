@@ -19,6 +19,7 @@ public class Nubish {
     private final TaskList taskList;
     private final UI ui;
     private final Parser parser;
+    private boolean hasLoadedTasks;
 
     /**
      * Creates a Nubish application that saves and loads tasks from the given file.
@@ -46,8 +47,8 @@ public class Nubish {
         Scanner scanner = new Scanner(System.in);
 
         loadTasks();
-
         ui.greet();
+        ui.printReminders(taskList.remind().toString());
         String input = scanner.nextLine().trim();
 
         while (parser.parse(input)) {
@@ -65,6 +66,24 @@ public class Nubish {
     public String start() {
         loadTasks();
         return ui.getGreeting();
+    }
+
+    /**
+     * Pulls out reminders if there are any.
+     *
+     * @return greeting message
+     */
+    public String remind() {
+        return ui.getReminders(taskList.remind().toString());
+    }
+
+    /**
+     * Returns the current formatted task list.
+     *
+     * @return formatted task list
+     */
+    public String getTaskList() {
+        return taskList.toString();
     }
 
     /**
@@ -98,9 +117,15 @@ public class Nubish {
     }
 
     private void loadTasks() {
+        if (hasLoadedTasks) {
+            return;
+        }
+
         try {
             storage.load();
+            hasLoadedTasks = true;
         } catch (FileNotFoundException e) {
+            hasLoadedTasks = true;
             System.out.println("No saved file to load from");
         }
     }

@@ -36,6 +36,13 @@ public class Deadline extends Task {
     }
 
     /**
+     * Returns deadline of task
+     */
+    public LocalDateTime getDeadline() {
+        return this.deadline;
+    }
+
+    /**
      * Converts a saved printDeadline string into a {@link LocalDateTime}.
      *
      * @param dateTimeString date and time in {@code dd/MM/yyyy HHmm} format

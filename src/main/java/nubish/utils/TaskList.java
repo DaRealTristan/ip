@@ -1,10 +1,12 @@
 package nubish.utils;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
 
+import nubish.tasks.Deadline;
 import nubish.tasks.Task;
 
 /**
@@ -66,8 +68,25 @@ public class TaskList {
         return tasklist;
     }
 
+    /**
+     * Returns a task list containing tasks whose deadlines are today.
+     */
+    public TaskList remind() {
+        TaskList tasklist = new TaskList();
+        Stream<Task> taskStream = this.tasks.stream().filter(task -> task instanceof Deadline)
+                .filter(task -> ((Deadline) task).getDeadline().toLocalDate().isEqual(LocalDate.now()));
+
+        tasklist.add(taskStream.toList().toArray(new Task[0]));
+
+        return tasklist;
+    }
+
     @Override
     public String toString() {
+        if (this.tasks.isEmpty()) {
+            return "";
+        }
+
         StringBuilder list = new StringBuilder();
         for (int i = 0; i < this.tasks.size(); i++) {
             Task t = this.get(i);

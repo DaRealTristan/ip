@@ -4,13 +4,13 @@ package nubish.utils;
  * Represents supported user commands and their text keywords.
  */
 public enum Command {
-    BYE("printBye"),
+    BYE("bye"),
     LIST("list"),
-    MARK("printMark"),
-    UNMARK("printUnmark"),
+    MARK("mark"),
+    UNMARK("unmark"),
     TODO("todo"),
-    DEADLINE("printDeadline"),
-    EVENT("printEvent"),
+    DEADLINE("deadline"),
+    EVENT("event"),
     DELETE("delete"),
     FIND("find"),
     UNKNOWN("");
