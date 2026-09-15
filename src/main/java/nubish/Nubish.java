@@ -101,6 +101,15 @@ public class Nubish {
     }
 
     /**
+     * Returns whether the latest response should be shown as an error.
+     *
+     * @return true if the latest response is an error response
+     */
+    public boolean isLastResponseError() {
+        return ui.isLastResponseError();
+    }
+
+    /**
      * Saves the current task list to disk.
      */
     public void save() {

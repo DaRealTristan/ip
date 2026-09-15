@@ -66,6 +66,13 @@
     -fx-background-color: white;
 }
 
+.error-bubble {
+    -fx-background-color: #ffd6d6;
+    -fx-border-color: #e57373;
+    -fx-border-radius: 8px;
+    -fx-border-width: 1.5px;
+}
+
 .user-bubble {
     -fx-background-color: #dcf8c6;
 }
@@ -89,6 +96,10 @@
     -fx-fill: white;
     -fx-translate-x: -5px;
     -fx-translate-y: 0;
+}
+
+.error-tail {
+    -fx-fill: #ffd6d6;
 }
 
 .user-tail {

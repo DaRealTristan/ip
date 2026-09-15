@@ -93,6 +93,6 @@ public class TaskList {
             list.append(String.format("%d. %s\n", i + 1, t.toString()));
         }
 
-        return (list.toString());
+        return (list.toString() + "\n");
     }
 }

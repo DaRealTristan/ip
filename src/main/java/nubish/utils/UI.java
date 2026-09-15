@@ -10,12 +10,14 @@ public class UI {
                     _________________________________________________
                     """;
     private String lastResponse;
+    private boolean isLastResponseError;
 
     /**
      * Prints the greeting message shown when Nubish starts.
      */
     public void greet() {
         lastResponse = getGreeting();
+        isLastResponseError = false;
         System.out.println(lastResponse);
     }
 
@@ -42,6 +44,15 @@ public class UI {
      */
     public String getLastResponse() {
         return lastResponse;
+    }
+
+    /**
+     * Returns whether the latest response is an error message.
+     *
+     * @return true if the latest response is an error message
+     */
+    public boolean isLastResponseError() {
+        return isLastResponseError;
     }
 
     /**
@@ -187,7 +198,7 @@ public class UI {
                         - delete
                         - find
                         """;
-        printResponse(cmd);
+        printResponse(cmd, true);
     }
 
     /**
@@ -209,11 +220,16 @@ public class UI {
      * @param message error message to show
      */
     public void showError(String message) {
-        printResponse(message);
+        printResponse(message, true);
     }
 
     private void printResponse(String response) {
+        printResponse(response, false);
+    }
+
+    private void printResponse(String response, boolean isError) {
         lastResponse = response;
+        isLastResponseError = isError;
         System.out.printf(RESPONSE, response);
     }
 }
