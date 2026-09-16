@@ -102,7 +102,7 @@ public class UI {
     public void printMark(String task) {
         String replyMark = String.format("""
                             Noice! I've marked this task as done:
-                                %s
+                                %s\n
                             """, task);
 
         printResponse(replyMark);
@@ -116,7 +116,7 @@ public class UI {
     public void printUnmark(String task) {
         String replyUnmark = String.format("""
                             I've unmarked this task:
-                                %s
+                                %s\n
                             """, task);
 
         printResponse(replyUnmark);
@@ -131,7 +131,7 @@ public class UI {
     public void printTodoAdded(String input, int size) {
         String replyTodo = String.format("""
                                 todo task added: %s
-                            Now you have %d tasks in the list.
+                            Now you have %d tasks in the list.\n
                             """, input, size);
         printResponse(replyTodo);
     }
@@ -146,7 +146,7 @@ public class UI {
     public void printDeadlineAdded(String taskName, String deadline, int size) {
         String replyDeadline = String.format("""
                                 Added task: %s (by: %s)
-                            Now you have %d tasks in the list
+                            Now you have %d tasks in the list\n
                             """, taskName, deadline, size);
         printResponse(replyDeadline);
     }
@@ -162,7 +162,7 @@ public class UI {
     public void printEventAdded(String eventName, String fromTime, String toTime, int size) {
         String replyEvent = String.format("""
                                 Added event: %s (From: %s, To: %s)
-                            Now you have %d tasks in the list
+                            Now you have %d tasks in the list\n
                             """, eventName, fromTime, toTime, size);
         printResponse(replyEvent);
     }
@@ -177,7 +177,7 @@ public class UI {
         String replyDelete = String.format("""
                             Ok. I have removed this task:
                                 %s
-                            Now you have %d tasks in the list
+                            Now you have %d tasks in the list\n
                             """, task, size);
 
         printResponse(replyDelete);
@@ -196,7 +196,7 @@ public class UI {
                         - mark
                         - unmark
                         - delete
-                        - find
+                        - find\n
                         """;
         printResponse(cmd, true);
     }
@@ -228,8 +228,16 @@ public class UI {
     }
 
     private void printResponse(String response, boolean isError) {
-        lastResponse = response;
+        lastResponse = addTrailingLineBreak(response);
         isLastResponseError = isError;
-        System.out.printf(RESPONSE, response);
+        System.out.printf(RESPONSE, lastResponse);
+    }
+
+    private String addTrailingLineBreak(String response) {
+        if (response.endsWith("\n")) {
+            return response;
+        }
+
+        return response + "\n";
     }
 }
