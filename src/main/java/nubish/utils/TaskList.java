@@ -18,10 +18,14 @@ public class TaskList {
     /**
      * Adds a task to the end of the list.
      *
-     * @param task task to add
+     * @param newTasks tasks to add
      */
-    public void add(Task... task) {
-        tasks.addAll(Arrays.asList(task));
+    public void add(Task... newTasks) {
+        for (Task newTask : newTasks) {
+            validateUniqueDescription(newTask);
+        }
+        validateUniqueNewDescriptions(newTasks);
+        tasks.addAll(Arrays.asList(newTasks));
     }
 
     /**
@@ -51,6 +55,24 @@ public class TaskList {
      */
     public Task get(int index) {
         return tasks.get(index);
+    }
+
+    private void validateUniqueDescription(Task newTask) {
+        boolean hasDuplicateDescription = tasks.stream()
+                .anyMatch(task -> task.getDescription().equalsIgnoreCase(newTask.getDescription()));
+        if (hasDuplicateDescription) {
+            throw new NubishException("Hrmmm... A task with the same details already exists.");
+        }
+    }
+
+    private void validateUniqueNewDescriptions(Task... newTasks) {
+        for (int i = 0; i < newTasks.length; i++) {
+            for (int j = i + 1; j < newTasks.length; j++) {
+                if (newTasks[i].getDescription().equalsIgnoreCase(newTasks[j].getDescription())) {
+                    throw new NubishException("Hrmmm... A task with the same details already exists.");
+                }
+            }
+        }
     }
 
     /**

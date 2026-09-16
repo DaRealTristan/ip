@@ -1,6 +1,7 @@
 package nubish.utils;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
 
@@ -32,5 +33,16 @@ public class TaskListTest {
 
         assertEquals(1, taskList.size());
         assertEquals(task, taskList.get(0));
+    }
+
+    /**
+     * Verifies that duplicate task descriptions are rejected.
+     */
+    @Test
+    public void add_duplicateDescription_throwsException() {
+        TaskList taskList = new TaskList();
+        taskList.add(new Todo("read book"));
+
+        assertThrows(NubishException.class, () -> taskList.add(new Todo("read book")));
     }
 }

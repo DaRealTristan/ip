@@ -33,6 +33,17 @@ public class ParserTest {
     }
 
     /**
+     * Verifies that malformed event date-times show event syntax and date-order guidance.
+     */
+    @Test
+    public void parse_invalidEventDateTime_showsEventDateTimeFormat() {
+        parser.parse("event meeting /from 30/02/2020 1800 /to 31/02/2020 1800");
+
+        assertTrue(ui.getLastResponse().contains("event {eventName} /from {startDate} /to {enddate}"));
+        assertTrue(ui.getLastResponse().contains("Start times must be earlier than end times."));
+    }
+
+    /**
      * Verifies that invalid task indexes are reported as user-facing errors.
      */
     @Test
