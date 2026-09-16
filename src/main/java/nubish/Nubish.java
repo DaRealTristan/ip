@@ -1,9 +1,9 @@
 package nubish;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Scanner;
 
+import nubish.utils.NubishException;
 import nubish.utils.Parser;
 import nubish.utils.Storage;
 import nubish.utils.TaskList;
@@ -49,10 +49,10 @@ public class Nubish {
         loadTasks();
         ui.greet();
         ui.printReminders(taskList.remind().toString());
-        String input = scanner.nextLine().trim();
+        String input = scanner.nextLine();
 
         while (parser.parse(input)) {
-            input = scanner.nextLine().trim();
+            input = scanner.nextLine();
         }
 
         saveTasks();
@@ -65,6 +65,9 @@ public class Nubish {
      */
     public String start() {
         loadTasks();
+        if (ui.isLastResponseError()) {
+            return ui.getLastResponse() + "\n\n" + ui.getGreeting();
+        }
         return ui.getGreeting();
     }
 
@@ -93,7 +96,7 @@ public class Nubish {
      * @return response produced after parsing the command
      */
     public String getResponse(String input) {
-        boolean shouldContinue = parser.parse(input.trim());
+        boolean shouldContinue = parser.parse(input);
         if (!shouldContinue) {
             saveTasks();
         }
@@ -133,9 +136,9 @@ public class Nubish {
         try {
             storage.load();
             hasLoadedTasks = true;
-        } catch (FileNotFoundException e) {
+        } catch (IOException | NubishException e) {
             hasLoadedTasks = true;
-            System.out.println("No saved file to load from");
+            ui.showError(String.format("OOPs seems like there was an error loading your data: %s", e.getMessage()));
         }
     }
 
@@ -143,7 +146,7 @@ public class Nubish {
         try {
             storage.save();
         } catch (IOException e) {
-            System.out.printf("OOPs seems like there was an error saving your data: %s", e.getMessage());
+            System.out.printf("OOPs seems like there was an error saving your data: %s%n", e.getMessage());
         }
     }
 }
