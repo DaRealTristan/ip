@@ -33,7 +33,7 @@ public class UI {
                 N N N U   U BBBB   I   SSS  HHHHH
                 N  NN U   U B   B  I      S H   H
                 N   N  UUU  BBBB  III SSSS  H   H
-                Hello! I'm Nubish.
+                Wazzup! I'm Nubish.
                 What can I do for you?""";
     }
 
@@ -59,7 +59,7 @@ public class UI {
      * Prints the farewell message shown when Nubish exits.
      */
     public void printBye() {
-        printResponse("Bye. Hope to see you again soon!");
+        printResponse("Sayonara. Hope to see you again soon!");
     }
 
     /**
@@ -79,7 +79,7 @@ public class UI {
      */
     public String getReminders(String reminders) {
         if (!reminders.isEmpty()) {
-            return "These tasks are due today:\n" + reminders;
+            return "REMINDER! These tasks are due today:\n" + reminders;
         }
 
         return "";
@@ -91,7 +91,7 @@ public class UI {
      * @param reminders formatted list of tasks due today
      */
     public void printReminders(String reminders) {
-        printResponse("These tasks are due today:\n" + reminders);
+        printResponse("REMINDER! These tasks are due today:\n" + reminders);
     }
 
     /**
@@ -101,7 +101,7 @@ public class UI {
      */
     public void printMark(String task) {
         String replyMark = String.format("""
-                            Nice! I've marked this task as done:
+                            Noice! I've marked this task as done:
                                 %s
                             """, task);
 
@@ -188,7 +188,7 @@ public class UI {
      */
     public void printCommandList() {
         String cmd = """
-                        OOPS!!! I'm sorry, but I don't know what that means :-(
+                        WuUPS!!! No idea what you're saying bruh :-(
                         Here is a list of the current commands:
                         - todo
                         - deadline
