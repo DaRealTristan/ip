@@ -1,7 +1,6 @@
 package nubish.utils;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
@@ -32,31 +31,22 @@ public class Storage {
     /**
      * Loads saved tasks from the configured file into the task list.
      *
-     * @throws FileNotFoundException if the save file does not exist
+     * @throws IOException if the save file cannot be created or read
      */
-    public void load() throws FileNotFoundException {
-        File f = new File(this.filepath);
-        try (Scanner scanner = new Scanner(f)) {
+    public void load() throws IOException {
+        File file = new File(this.filepath);
+        createFileIfMissing(file);
+
+        try (Scanner scanner = new Scanner(file)) {
+            int lineNumber = 0;
             while (scanner.hasNextLine()) {
+                lineNumber++;
                 String savedTask = scanner.nextLine();
                 if (savedTask.isBlank()) {
                     continue;
                 }
 
-                String[] line = savedTask.split("\\s*\\|\\s*");
-                switch (line[0]) {
-                    case "E":
-                        this.taskList.add(new Event(Integer.parseInt(line[1]) == 1, line[2], line[3], line[4]));
-                        break;
-                    case "T":
-                        this.taskList.add(new Todo(Integer.parseInt(line[1]) == 1, line[2]));
-                        break;
-                    case "D":
-                        this.taskList.add(new Deadline(Integer.parseInt(line[1]) == 1, line[2], line[3]));
-                        break;
-                    default:
-                        break;
-                }
+                loadTask(savedTask, lineNumber);
             }
         }
     }
@@ -67,11 +57,67 @@ public class Storage {
      * @throws IOException if the file cannot be written
      */
     public void save() throws IOException {
-        FileWriter fw = new FileWriter(this.filepath);
-        for (int i = 0; i < this.taskList.size(); i++) {
-            fw.write(this.taskList.get(i).saveString() + "\n");
-        }
+        File file = new File(this.filepath);
+        createParentDirectory(file);
 
-        fw.close();
+        try (FileWriter fileWriter = new FileWriter(file)) {
+            for (int i = 0; i < this.taskList.size(); i++) {
+                fileWriter.write(this.taskList.get(i).saveString() + "\n");
+            }
+        }
+    }
+
+    private void createFileIfMissing(File file) throws IOException {
+        createParentDirectory(file);
+        if (!file.exists() && !file.createNewFile()) {
+            throw new IOException("Could not create save file.");
+        }
+        if (!file.isFile()) {
+            throw new IOException("Save path is not a file.");
+        }
+    }
+
+    private void createParentDirectory(File file) throws IOException {
+        File parentDirectory = file.getParentFile();
+        if (parentDirectory != null && !parentDirectory.exists() && !parentDirectory.mkdirs()) {
+            throw new IOException("Could not create save directory.");
+        }
+    }
+
+    private void loadTask(String savedTask, int lineNumber) {
+        try {
+            String[] line = savedTask.split("\\s*\\|\\s*", -1);
+            switch (line[0]) {
+                case "E":
+                    validateFieldCount(line, 5);
+                    this.taskList.add(new Event(parseDoneStatus(line[1]), line[2], line[3], line[4]));
+                    break;
+                case "T":
+                    validateFieldCount(line, 3);
+                    this.taskList.add(new Todo(parseDoneStatus(line[1]), line[2]));
+                    break;
+                case "D":
+                    validateFieldCount(line, 4);
+                    this.taskList.add(new Deadline(parseDoneStatus(line[1]), line[2], line[3]));
+                    break;
+                default:
+                    throw new NubishException("unknown task type");
+            }
+        } catch (RuntimeException e) {
+            throw new NubishException(String.format("Invalid save file at line %d: %s", lineNumber, e.getMessage()));
+        }
+    }
+
+    private void validateFieldCount(String[] line, int expectedFieldCount) {
+        if (line.length != expectedFieldCount) {
+            throw new NubishException("wrong number of fields");
+        }
+    }
+
+    private boolean parseDoneStatus(String status) {
+        if (!status.equals("0") && !status.equals("1")) {
+            throw new NubishException("invalid task status");
+        }
+        return status.equals("1");
     }
 }
