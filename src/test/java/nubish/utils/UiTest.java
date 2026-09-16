@@ -32,7 +32,7 @@ public class UiTest {
 
         ui.showError("error message");
 
-        assertEquals("error message", ui.getLastResponse());
+        assertEquals("error message\n", ui.getLastResponse());
         assertTrue(ui.isLastResponseError());
     }
 
