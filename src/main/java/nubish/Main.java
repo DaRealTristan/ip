@@ -72,8 +72,8 @@ public class Main extends Application {
 
     @FXML
     private void handleUserInput() {
-        String command = input.getText().trim();
-        if (command.isEmpty()) {
+        String command = input.getText();
+        if (command.isBlank()) {
             return;
         }
 
@@ -83,7 +83,7 @@ public class Main extends Application {
         String response = nubish.getResponse(command);
         addNubishMessage(response, nubish.isLastResponseError());
 
-        if (command.equalsIgnoreCase("printBye")) {
+        if (command.equalsIgnoreCase("bye")) {
             input.setDisable(true);
             sendButton.setDisable(true);
         }

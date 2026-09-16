@@ -2,12 +2,16 @@ package nubish.tasks;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.ResolverStyle;
+
+import nubish.utils.NubishException;
 
 /**
  * Represents a task that happens between a start and end date and time.
  */
 public class Event extends Task {
-    private static final DateTimeFormatter SAVE_FORMAT = DateTimeFormatter.ofPattern("dd/MM/yyyy HHmm");
+    private static final DateTimeFormatter SAVE_FORMAT = DateTimeFormatter.ofPattern("dd/MM/uuuu HHmm")
+            .withResolverStyle(ResolverStyle.STRICT);
     private static final DateTimeFormatter PRINT_FORMAT = DateTimeFormatter.ofPattern("HHmm MMM d yyyy");
 
     private LocalDateTime from;
@@ -24,8 +28,7 @@ public class Event extends Task {
         super(description);
         this.from = convertToDateTime(from);
         this.to = convertToDateTime(to);
-
-        assert this.to.isBefore(this.from) : "From date was set to be after to date";
+        validateDateRange();
     }
 
     /**
@@ -40,6 +43,7 @@ public class Event extends Task {
         super(isDone, description);
         this.from = convertToDateTime(from);
         this.to = convertToDateTime(to);
+        validateDateRange();
     }
 
     /**
@@ -50,6 +54,12 @@ public class Event extends Task {
      */
     public LocalDateTime convertToDateTime(String dateTimeString) {
         return LocalDateTime.parse(dateTimeString, SAVE_FORMAT);
+    }
+
+    private void validateDateRange() {
+        if (!this.from.isBefore(this.to)) {
+            throw new NubishException("Hrmmm... Start times must be earlier than end times.");
+        }
     }
 
     /**
