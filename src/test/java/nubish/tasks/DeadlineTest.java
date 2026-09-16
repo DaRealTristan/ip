@@ -3,6 +3,7 @@ package nubish.tasks;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
 
 import org.junit.jupiter.api.Test;
@@ -76,10 +77,48 @@ public class DeadlineTest {
     }
 
     /**
+     * Verifies that a done printDeadline task is saved in the expected file format.
+     */
+    @Test
+    public void saveString_markedDeadline_returnsCorrectFormat() {
+        Task task = new Deadline(true, "read book", "12/10/2020 1800");
+
+        assertEquals("D | 1 | read book | 12/10/2020 1800", task.saveString());
+    }
+
+    /**
+     * Verifies that the deadline date-time is exposed after parsing.
+     */
+    @Test
+    public void getDeadline_validDeadline_returnsParsedDateTime() {
+        Deadline deadline = new Deadline("read book", "12/10/2020 1800");
+
+        assertEquals(LocalDateTime.of(2020, 10, 12, 18, 0), deadline.getDeadline());
+    }
+
+    /**
+     * Verifies that a printDeadline task is displayed in the expected user-facing format.
+     */
+    @Test
+    public void toString_validDeadline_returnsFormattedDeadline() {
+        Task task = new Deadline("read book", "12/10/2020 1800");
+
+        assertEquals("[D][ ] read book (by: 1800 Oct 12 2020)", task.toString());
+    }
+
+    /**
      * Verifies that deadlines must use the expected date-time format.
      */
     @Test
     public void convertToDateTime_throwsErrorWhenWrongFormatIsUsed() {
         assertThrows(DateTimeParseException.class, () -> new Deadline("read book", "12/10/20 1800"));
+    }
+
+    /**
+     * Verifies that deadlines reject non-existent calendar dates.
+     */
+    @Test
+    public void convertToDateTime_nonExistentDate_throwsException() {
+        assertThrows(DateTimeParseException.class, () -> new Deadline("read book", "30/02/2020 1800"));
     }
 }
