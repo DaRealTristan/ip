@@ -61,4 +61,44 @@ public class TaskTest {
 
         assertEquals(" ", task.getStatusIcon());
     }
+
+    /**
+     * Verifies that task descriptions can be retrieved.
+     */
+    @Test
+    public void getDescription_validTask_returnsDescription() {
+        Task task = new Task("read book");
+
+        assertEquals("read book", task.getDescription());
+    }
+
+    /**
+     * Verifies that an undone task is saved in the expected file format.
+     */
+    @Test
+    public void saveString_unmarkedTask_returnsCorrectFormat() {
+        Task task = new Task("read book");
+
+        assertEquals("0 | read book", task.saveString());
+    }
+
+    /**
+     * Verifies that a done task is saved in the expected file format.
+     */
+    @Test
+    public void saveString_markedTask_returnsCorrectFormat() {
+        Task task = new Task(true, "read book");
+
+        assertEquals("1 | read book", task.saveString());
+    }
+
+    /**
+     * Verifies that a task is displayed in the expected user-facing format.
+     */
+    @Test
+    public void toString_validTask_returnsFormattedTask() {
+        Task task = new Task("read book");
+
+        assertEquals("[ ] read book", task.toString());
+    }
 }

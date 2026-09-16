@@ -71,4 +71,24 @@ public class TodoTest {
 
         assertEquals("T | 0 | read book", task.saveString());
     }
+
+    /**
+     * Verifies that a done todo task is saved in the expected file format.
+     */
+    @Test
+    public void saveString_markedTodo_returnsCorrectFormat() {
+        Task task = new Todo(true, "read book");
+
+        assertEquals("T | 1 | read book", task.saveString());
+    }
+
+    /**
+     * Verifies that a todo task is displayed in the expected user-facing format.
+     */
+    @Test
+    public void toString_validTodo_returnsFormattedTodo() {
+        Task task = new Todo("read book");
+
+        assertEquals("[T][ ] read book", task.toString());
+    }
 }
